@@ -174,6 +174,7 @@ class announcements_module
 				$template->assign_vars(array(
 					'OWNER'	=>	$user->data['username'],
 					'OWNER_ID'	=>	$user->data['user_id'],
+					'S_BOARD_ANNOUNCEMENTS'	=> true,
 					'BOARD_ANNOUNCEMENTS_PREVIEW'	=> $announcement_text_preview,
 					'BOARD_ANNOUNCEMENTS_BGCOLOR'	=> '000000',
 					'BOARD_ANAUNCMENT_NAME'			=> $data['announce_name'],
@@ -282,6 +283,7 @@ class announcements_module
 					'ID'	=> $row['announce_id'],
 					'NAME'	=> $row['announce_title'],
 					'ORDER'	=> $row['announce_order'],
+					'S_BOARD_ANNOUNCEMENTS'	=> true,
 					'BOARD_ANNOUNCEMENTS_PREVIEW'	=> $announcement_text_preview,
 					'BOARD_ANNOUNCEMENTS_BGCOLOR'	=> $row['announce_bgcolor'],
 					'BOARD_ANNOUNCEMENTS_TEXT'		=> $announcement_text_edit['text'],
