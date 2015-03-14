@@ -1,8 +1,7 @@
 <!-- IF .anouns -->
 	<!-- INCLUDEJS @anavaro_abannouncements/js/boardannouncements.js -->
-	<!-- INCLUDECSS @anavaro_abannouncements/boardannouncements.css -->
 	<!-- BEGIN anouns -->
-	<div id="phpbb_announcement"<!-- IF anouns.BOARD_ANNOUNCEMENT_BGCOLOR --> style="background-color:#{anouns.BOARD_ANNOUNCEMENT_BGCOLOR}"<!-- ENDIF -->>
+	<div id="phpbb_announcement_{anouns.ID}"<!-- IF anouns.BOARD_ANNOUNCEMENT_BGCOLOR --> style="background-color:#{anouns.BOARD_ANNOUNCEMENT_BGCOLOR}"<!-- ENDIF --> class="phpbb_announcement">
 		<!-- IF anouns.S_BOARD_ANNOUNCEMENT_DISMISS --><a href="{anouns.U_BOARD_ANNOUNCEMENT_CLOSE}" data-ajax="close_announcement" data-overlay="false" class="close clearfix" title="{L_BOARD_ANNOUNCEMENT_CLOSE}"></a><!-- ENDIF -->
 		<div>{anouns.BOARD_ANNOUNCEMENT}</div>
 	</div>

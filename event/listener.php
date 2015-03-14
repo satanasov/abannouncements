@@ -78,6 +78,7 @@ class listener implements EventSubscriberInterface
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$anouncemnts[] = array(
+				'announce_id' => $row['announce_id'],
 				'announce_title' => $row['announce_title'],
 				'announce_content' => $row['announce_content'],
 				'announce_bitfield' => $row['announce_bitfield'],
@@ -87,6 +88,7 @@ class listener implements EventSubscriberInterface
 				'announce_bgcolor' => $row['announce_bgcolor'],
 			);
 		}
+
 		foreach ($anouncemnts as $var)
 		{
 			$announcement_message = generate_text_for_display(
@@ -96,13 +98,14 @@ class listener implements EventSubscriberInterface
 				$var['announce_options']
 			);
 			$this->template->assign_block_vars('anouns', array(
+				'ID'	=> $var['announce_id'],
 				'BOARD_ANNOUNCEMENT' => $announcement_message,
 				'S_BOARD_ANNOUNCEMENT_DISMISS'	=> $var['announce_akn'],
 				'BOARD_ANNOUNCEMENT_BGCOLOR'	=> $var['announce_bgcolor'],
-				/*'U_BOARD_ANNOUNCEMENT_CLOSE'	=> $this->controller_helper->route('phpbb_boardannouncements_controller', array(
+				'U_BOARD_ANNOUNCEMENT_CLOSE'	=> $this->helper->route('abannouncements_close', array(
+					'announcement_id'	=> $var['announce_id'],
 					'hash' => generate_link_hash('close_boardannouncement')
-				)),*/
-				'U_BOARD_ANNOUNCEMENT_CLOSE' => '#',
+				)),
 			));
 		}
 	}

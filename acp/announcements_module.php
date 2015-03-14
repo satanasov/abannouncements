@@ -228,10 +228,14 @@ class announcements_module
 					//@ TODO - implement expire and order
 					$data['announce_expire'] = 0;
 					$data['announce_order'] = 0;
-					$data['announce_akn_users'] = 0;
-					
+					$aknowledge_reset = $this->request->variable('reset_akn', 0);
 					if($this->request->is_set_post('submit'))
 					{
+						if ($aknowledge_reset)
+						{
+							$sql = 'UPDATE ' . USERS_TABLE . ' SET announce_akn = REPLACE(announce_akn, \':' . $tid . ':\', \':\')';
+							$this->db->sql_query($sql);
+						}
 						$sql = 'UPDATE ' . $table_prefix . 'board_announce SET ' . $db->sql_build_array('UPDATE', $data) . ' WHERE announce_id = ' . $tid;
 						$db->sql_query($sql);
 						trigger_error($this->user->lang('BOARD_ANNOUNCEMENTS_UPDATE') . adm_back_link($this->u_action));
@@ -273,7 +277,6 @@ class announcements_module
 				{
 					$announcement_text_preview = generate_text_for_display($row['announce_content'], $row['announce_uid'], $row['announce_bitfield'], $row['announce_options']);
 				}
-				var_dump($announcement_text_preview);
 				$announcement_text_edit = generate_text_for_edit($row['announce_content'], $row['announce_uid'], $row['announce_bitfield'], 7);
 				$template->assign_vars(array(
 					'ID'	=> $row['announce_id'],

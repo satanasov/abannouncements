@@ -1,5 +1,5 @@
 /* style the announcement banner */
-#phpbb_announcement {
+.phpbb_announcement {
 	margin: 10px 0;
 	font-size: 1.1em;
 	padding: 10px;
@@ -8,7 +8,7 @@
 }
 
 /* zero out any text margins and scroll any overflow */
-#phpbb_announcement div {
+.phpbb_announcement div {
 	margin: 0;
 	overflow-x: auto;
 	overflow: hidden;
@@ -17,7 +17,7 @@
 }
 
 /* style the close button */
-#phpbb_announcement .close {
+.phpbb_announcement .close {
 	float: right;
 	margin: 0 0 0 4px;
 	width: 12px;
@@ -27,28 +27,28 @@
 }
 
 /* reposition close button for right to left languages */
-.rtl #phpbb_announcement .close {
+.rtl .phpbb_announcement .close {
 	float: left;
 	margin: 0 4px 0 0;
 }
 
 /* hide close button on desktops by default */
-.notouch #phpbb_announcement .close {
+.notouch .phpbb_announcement .close {
 	opacity: 0;
 	transition: opacity .5s;
 }
 
 /* display the close button on mouse-over of the banner */
-.notouch #phpbb_announcement:hover .close {
+.notouch .phpbb_announcement:hover .close {
 	opacity: 0.6;
 }
 
 /* fix for lists, force them to display inside containing div */
-#phpbb_announcement ul, #phpbb_announcement ol {
+.phpbb_announcement ul, .phpbb_announcement ol {
 	margin-left: 20px;
 }
 
-.rtl #phpbb_announcement ul, .rtl #phpbb_announcement ol {
+.rtl .phpbb_announcement ul, .rtl .phpbb_announcement ol {
 	margin-left: 0;
 	margin-right: 20px;
 }

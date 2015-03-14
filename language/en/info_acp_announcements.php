@@ -37,7 +37,7 @@ $lang = array_merge($lang, array(
 
 	'BOARD_ANNOUNCEMENTS_BGCOLOR'		=> 'Announcement background color',
 	'BOARD_ANNOUNCEMENTS_BGCOLOR_EXPLAIN'	=> 'Announcement background color',
-	'BOARD_ANNOUNCEMENTS_CREATED'		=> 'Board announcement created'
+	'BOARD_ANNOUNCEMENTS_CREATED'		=> 'Board announcement created',
 	'BOARD_ANNOUNCEMENTS_UPDATE'		=> 'Board announcement updated',
 	'BOARD_ANAUNCMENT_DELETE_CONFIRM'	=> 'Are you sure you want to delete this board announcement?',
 	'BOARD_ANAUNCMENT_DELETED'			=> 'Board announcement deleted',

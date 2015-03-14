@@ -13,3 +13,12 @@ services:
             - %tables.abannouncements.announcements%
         tags:
             - { name: event.listener }
+    anavaro.abannouncements.ajaxify:
+        class: anavaro\abannouncements\controller\ajaxify
+        arguments:
+            - @config
+            - @controller.helper
+            - @dbal.conn
+            - @request
+            - @user
+            - %tables.abannouncements.announcements%

@@ -1,5 +1,5 @@
-postlove_control:
-    path: /postlove/{action}/{post}
-    defaults: { _controller: anavaro.abannouncements.ajaxify:base }
+abannouncements_close:
+    path: /abannouncements/{announcement_id}
+    defaults: { _controller: anavaro.abannouncements.ajaxify:close }
     requirements:
-        post: \d+
+        announcement_id: \d+
