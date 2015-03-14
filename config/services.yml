@@ -1,0 +1,15 @@
+parameters:
+    tables.abannouncements.announcements: %core.table_prefix%board_announce
+services:
+    anavaro.abannouncements.listener:
+        class: anavaro\abannouncements\event\listener
+        arguments:
+            - @config
+            - @controller.helper
+            - @dbal.conn
+            - @request
+            - @template
+            - @user
+            - %tables.abannouncements.announcements%
+        tags:
+            - { name: event.listener }

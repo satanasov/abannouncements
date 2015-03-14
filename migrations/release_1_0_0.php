@@ -47,6 +47,11 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 					'PRIMARY_KEY'	=> 'announce_id',
 				),
 			),
+			'add_columns'	=> array(
+				$this->table_prefix . 'users' => array(
+					'announce_akn' => array('VCHAR:255', ''),
+				),
+			),
 		);
 	}
 	public function revert_schema()

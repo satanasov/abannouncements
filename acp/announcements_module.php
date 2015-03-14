@@ -313,7 +313,7 @@ class announcements_module
 				}
 				else
 				{
-					confirm_box(false, 'BOARD_ANAUNCMENT_DELETE', '');
+					confirm_box(false, 'BOARD_ANAUNCMENT_DELETE_CONFIRM', '');
 				}
 			break;
 		}
