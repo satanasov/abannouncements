@@ -1,0 +1,116 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_BOARD_ANNOUNCEMENTS}</h1>
+<p>{L_BOARD_ANNOUNCEMENTS_EXP}
+	<!-- IF WHERE_AM_I == 1 -->
+	<table border="0">
+		<tr>
+			<td><B>{L_ID}</td><td>{L_TITLE}</td><td>{L_CONTENT}</td><td>{L_VISIBILITY}</td><td>E</td><td>D</b></td>
+		<tr>
+		<!-- IF .messages_table -->
+		<!-- BEGIN messages_table -->
+		<tr>
+			<td valign="top">{messages_table.ID}</td><td valign="top">{messages_table.NAME}</td><td valign="top">{messages_table.CONTENT}</td><td valign="top">{messages_table.GROUP}</td><td valign="top"><a href="{messages_table.EDIT_URL}">E</a></td><td valign="top"><a href="{messages_table.DEL_URL}">D</a></td>
+		</tr>
+		<!-- END messages_table -->
+		<!-- ELSE -->
+			<td colspan="6" align="center"><center><a href="{NEW_MESSAGE}"><center>{L_NO_ANNOUNCEMENTS}</center></a></center></td>
+		<!-- ENDIF -->
+		<tr>
+			<td colspan="6" align="center"><center><a href="{NEW_MESSAGE}">{L_ADD_NEW_BOARD_ANNOUNCEMENT}</a></center></td>
+		</tr>
+	</table>
+	<!-- ELSEIF WHERE_AM_I == 2 -->
+
+	<script>
+		var form_name = 'acp_board_announcements';
+		var text_name = 'board_announcements_text';
+		var load_draft = false;
+		var upload = false;
+		var imageTag = false;
+	</script>
+
+	<!-- IF ERRORS -->
+		<div class="errorbox">
+			<h3>{L_WARNING}</h3>
+			<p>{ERRORS}</p>
+		</div>
+	<!-- ENDIF -->
+
+	<form id="acp_board_announcements" method="post" action="{U_ACTION}">
+
+		<!-- IF BOARD_ANNOUNCEMENTS_PREVIEW -->
+			<fieldset>
+				<legend>{L_BOARD_ANNOUNCEMENTS_PREVIEW}</legend>
+				<div style="padding:10px; font-size:1.0em; overflow: auto; <!-- IF BOARD_ANNOUNCEMENTS_BGCOLOR -->background-color:#{BOARD_ANNOUNCEMENTS_BGCOLOR}<!-- ENDIF -->">{BOARD_ANNOUNCEMENTS_PREVIEW}</div>
+			</fieldset>
+		<!-- ENDIF -->
+
+		<fieldset>
+			<legend>{L_BOARD_ANNOUNCEMENTS_TEXT}</legend>
+			<dl>
+				<dt><label for="board_announcements_bgcolor">{L_BOARD_ANNOUNCEMENTS_BGCOLOR}{L_COLON}</label><br /><span>{L_BOARD_ANNOUNCEMENTS_BGCOLOR_EXPLAIN}</span></dt>
+				<dd>
+					<input name="board_announcements_bgcolor" type="text" id="board_announcements_bgcolor" value="{BOARD_ANNOUNCEMENTS_BGCOLOR}" size="6" maxlength="6" <!-- IF BOARD_ANNOUNCEMENTS_BGCOLOR -->style="border-right:20px solid #{BOARD_ANNOUNCEMENTS_BGCOLOR}"<!-- ENDIF --> />
+				</dd>
+			</dl>
+
+			<dl>
+				<dt>{L_TITLE}</dt>
+				<dd><input type="text" name="name" <!-- IF EDITABLE -->value={NAME}<!-- ENDIF -->></input></dd>
+			</dl>
+			<br />
+
+			<!-- INCLUDE acp_posting_buttons.html -->
+
+			<dl class="responsive-columns">
+				<dt style="width: 90px;" id="color_palette_placeholder" data-orientation="v" data-height="12" data-width="15" data-bbcode="true"></dt>
+				<dd style="margin-{S_CONTENT_FLOW_BEGIN}: 90px;">
+					<textarea name="board_announcements_text" rows="19" cols="60" style="width: 95%;" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true">{BOARD_ANNOUNCEMENTS_TEXT}</textarea>
+				</dd>
+				<dd style="margin-{S_CONTENT_FLOW_BEGIN}: 90px; margin-top: 5px;">
+					<!-- IF S_BBCODE_ALLOWED -->
+						<label><input type="checkbox" class="radio" name="disable_bbcode"<!-- IF S_BBCODE_DISABLE_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_DISABLE_BBCODE}</label>
+					<!-- ENDIF -->
+					<!-- IF S_SMILIES_ALLOWED -->
+						<label><input type="checkbox" class="radio" name="disable_smilies"<!-- IF S_SMILIES_DISABLE_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_DISABLE_SMILIES}</label>
+					<!-- ENDIF -->
+					<!-- IF S_LINKS_ALLOWED -->
+						<label><input type="checkbox" class="radio" name="disable_magic_url"<!-- IF S_MAGIC_URL_DISABLE_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_DISABLE_MAGIC_URL}</label>
+					<!-- ENDIF -->
+				</dd>
+				<dd style="margin-{S_CONTENT_FLOW_BEGIN}: 90px; margin-top: 10px;"><strong>{L_OPTIONS}{L_COLON} </strong>{BBCODE_STATUS} :: {IMG_STATUS} :: {FLASH_STATUS} :: {URL_STATUS} :: {SMILIES_STATUS}</dd>
+			</dl>
+			<dl class="responsive-columns">
+				<dt><label for="board_announcements_groups">{L_GROUPS}</dt>
+				<!-- BEGIN groups -->
+				<dd><input type="checkbox" class="checkbox" name="groups[]" value="{groups.ID}"<!-- IF groups.CHECKED == 1 --> CHECKED<!-- ENDIF -->>&nbsp;{groups.NAME}</dd>
+				<!-- END groups -->
+			</dl>
+			<dl>
+				<dt>{L_AUTHOR}</dt>
+				<dd>{OWNER}<input type="hidden" name="owner" value="{OWNER_ID}"></dd>
+			</dl>
+			<dl>
+				<dt>{L_AKNOWLEGABLE}</dt>
+				<dd><input type="radio" class="radio" name="akn" value="1"<!-- IF AKN == 1 --> CHECKED<!-- ENDIF -->> Да? </dd>
+				<dd><input type="radio" class="radio" name="akn" value="0"<!-- IF AKN == 0 --> CHECKED<!-- ENDIF -->> Не? </dd>
+
+			</dl>
+			<dl>
+				<dt>{L_RESET_AKNOWLEDGED}</dt>
+				<dd><input type="checkbox" class="checkbox" name="reset_akn"></dd>
+			</dl>
+		</fieldset>
+
+		<fieldset class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+			<input class="button2" type="submit" name="preview" value="{L_PREVIEW}" />
+			{S_FORM_TOKEN}
+		</fieldset>
+	</form>
+	<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->
