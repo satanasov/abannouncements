@@ -38,11 +38,11 @@ class listener implements EventSubscriberInterface
 	* @param \phpbb\user                 $user               User object
 	* @access public
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request,
+	public function __construct(\phpbb\cache\driver\driver_interface $cache, \phpbb\controller\helper $helper, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request,
 	\phpbb\template\template $template, \phpbb\user $user,
 	$announcments_table)
 	{
-		$this->config = $config;
+		$this->cache = $cache;
 		$this->helper = $helper;
 		$this->db = $db;
 		$this->request = $request;
@@ -69,20 +69,32 @@ class listener implements EventSubscriberInterface
 	* @return null
 	* @access public
 	*/
-	public function display_board_announcements($event)
+	public function display_board_announcements()
 	{
 		$cur_page = $this->request->server('REQUEST_URI', '');
 		$fragments = explode('?', $cur_page);
 		$url = explode ('/', $fragments[0]);
-		$page_name = explode('.', end($url));
+		if (isset($url))
+		{
+			$page_name = explode('.', end($url));
+		}
 		$exclude_announces = explode(':', $this->user->data['announce_akn']);
 		$sql = 'SELECT * 
 				FROM ' . $this->announcements_table . ' 
 				WHERE ' . $this->db->sql_in_set('announce_id', $exclude_announces, true, true) . '
 					and announce_group ' . $this->db->sql_like_expression($this->db->get_any_char() . ':' . $this->user->data['group_id'] . ':' . $this->db->get_any_char()) . '
-					and (announce_page ' . $this->db->sql_like_expression($this->db->get_any_char() . ':' . $page_name[0] . ':' . $this->db->get_any_char()) . ' 
-						or announce_page ' . $this->db->sql_like_expression($this->db->get_any_char() . ':all:' . $this->db->get_any_char()) . ')
-				ORDER BY announce_order';
+					and ';
+		if (isset($page_name[0]))
+		{
+			$sql .= '(announce_page ' . $this->db->sql_like_expression($this->db->get_any_char() . ':' . $page_name[0] . ':' . $this->db->get_any_char()) . ' 
+						or ';
+		}
+		$sql .= 'announce_page ' . $this->db->sql_like_expression($this->db->get_any_char() . ':all:' . $this->db->get_any_char());
+		if (isset($page_name[0]))
+		{
+			$sql .= ')';
+		}
+		$sql .=	' ORDER BY announce_order';
 		$result = $this->db->sql_query($sql);
 		$anouncemnts = array();
 		while ($row = $this->db->sql_fetchrow($result))
@@ -98,7 +110,7 @@ class listener implements EventSubscriberInterface
 				'announce_bgcolor' => $row['announce_bgcolor'],
 			);
 		}
-
+		$this->db->sql_freeresult($result);
 		foreach ($anouncemnts as $var)
 		{
 			$announcement_message = generate_text_for_display(

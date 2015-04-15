@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<table name="phpbb_board_announce">
+		<column>announce_id</column>
+		<column>announce_title</column>
+		<column>announce_bgcolor</column>
+		<column>announce_content</column>
+		<column>announce_bitfield</column>
+		<column>announce_uid</column>
+		<column>announce_options</column>
+		<column>announce_group</column>
+		<column>announce_page</column>
+		<column>announce_order</column>
+		<column>announce_expire</column>
+		<column>announce_owner_id</column>
+		<column>announce_akn</column>
+		<column>announce_akn_users</column>
+		<row>
+			<value>1</value>
+			<value>test 1</value>
+			<value>3d373d</value>
+			<value>Това е портал за алтернативна сексуалност, дефинир...</value>
+			<value>RkI=</value>
+			<value>qrumpvrj</value>
+			<value>7</value>
+			<value>{g:1:2:}</value>
+			<value>{p:all:}</value>
+			<value>0</value>
+			<value>0</value>
+			<value>2</value>
+			<value>1</value>
+			<value>0</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>test 1</value>
+			<value>3d373d</value>
+			<value>Това е портал за алтернативна сексуалност, дефинир...</value>
+			<value>RkI=</value>
+			<value>qrumpvrj</value>
+			<value>7</value>
+			<value>{g:1:2:}</value>
+			<value>{p:all:}</value>
+			<value>0</value>
+			<value>0</value>
+			<value>2</value>
+			<value>1</value>
+			<value>0</value>
+		</row>
+	</table>
+</dataset>
