@@ -29,8 +29,6 @@ class announcements_module
 		$tid = request_var('tid', 0);
 		$inputForm = request_var('input', '0');
 		//$this->var_display($tid);
-		$this->tpl_name		= 'acp_announcements';
-		$this->page_title	= $user->lang('BOARD_ANNOUNCEMENTS');
 		$form_name = 'acp_board_announcements';
 		add_form_key($form_name);
 		//Lets get some groups!
@@ -61,7 +59,7 @@ class announcements_module
 					$messages[$row['announce_id']] = array (
 						'id'	=> $row['announce_id'],
 						'name'	=> $row['announce_title'],
-						'content'	=> $row['announce_content'],
+						'content'	=> generate_text_for_display($row['announce_content'], $row['announce_uid'], $row['announce_bitfield'], $row['announce_options']),
 						'group'	=> explode(':', substr($row['announce_group'], 3, -2)),
 						'order'	=> $row['announce_order'],
 						'expire'	=> $row['announce_expire'],
@@ -72,13 +70,13 @@ class announcements_module
 				}
 				foreach ($messages as $VAR) {
 					$group_out = '';
-					if (count($VAR['group']) > 1) {
+					if (!empty($VAR['group'])) {
 						foreach ($VAR['group'] as $RAW) {
-							$group_out .= $groups_array[$RAW]['name']."<br>";
+							if ($RAW)
+							{
+								$group_out .= $groups_array[$RAW]['name']."<br>";
+							}
 						}
-					}
-					else {
-						$group_out = $groups_array[$VAR['group'][0]]['name'];
 					}
 					$edit_url = append_sid("index.php?i=".$id."&mode=".$mode."&act=edit&tid=".$VAR['id']);
 					$del_url = append_sid("index.php?i=".$id."&mode=".$mode."&act=del&tid=".$VAR['id']);
@@ -94,9 +92,9 @@ class announcements_module
 				}
 				$template->assign_var('NEW_MESSAGE',append_sid("index.php?i=".$id."&mode=".$mode."&act=add"));
 				//$this->var_display($messages);
-				$template->assign_vars(array(
-					'WHERE_AM_I' => '1',
-				));
+				
+				$this->tpl_name		= 'acp_announcements';
+				$this->page_title	= $user->lang('BOARD_ANNOUNCEMENTS');
 			break;
 			case 'add':
 				if ($this->request->is_set_post('submit') || $this->request->is_set_post('preview'))
@@ -121,6 +119,8 @@ class announcements_module
 					$dismiss_announcements = $this->request->variable('board_announcements_dismiss', false);
 					$groups = implode(':', $this->request->variable('groups', array(0)));
 					$data['announce_group'] = '{g:' . $groups . ':}';
+					$pages = implode(':', $this->request->variable('pages', array(0)));
+					$data['announce_page'] = '{p:' . $pages . ':}';
 					$data['announce_bitfield'] = $message_parser->bbcode_bitfield; 
 					$data['announce_uid'] = $message_parser->bbcode_uid;
 					$data['announce_content'] = $message_parser->message;
@@ -147,6 +147,7 @@ class announcements_module
 						'announce_content' => '',
 						'announce_uid'	=> '',
 						'announce_group'	=> '',
+						'announce_page'	=> '',
 						'announce_name'	=> '',
 						'announce_bitfield'	=> '',
 						'announce_options'	=> OPTION_FLAG_BBCODE + OPTION_FLAG_SMILIES + OPTION_FLAG_LINKS
@@ -171,16 +172,28 @@ class announcements_module
 						'CHECKED'	=> (in_array($id, $groups) ? 1 : 0),
 					));
 				}
+				$pages_selected = explode(':', $data['announce_page']);
 				$template->assign_vars(array(
 					'OWNER'	=>	$user->data['username'],
 					'OWNER_ID'	=>	$user->data['user_id'],
 					'S_BOARD_ANNOUNCEMENTS'	=> true,
 					'BOARD_ANNOUNCEMENTS_PREVIEW'	=> $announcement_text_preview,
 					'BOARD_ANNOUNCEMENTS_BGCOLOR'	=> '000000',
-					'BOARD_ANAUNCMENT_NAME'			=> $data['announce_name'],
+					'BOARD_ANAUNCMENT_NAME'			=> isset($data['announce_title']) ? $data['announce_title'] : '',
 					'BOARD_ANNOUNCEMENTS_TEXT'		=> $announcement_text_edit['text'],
-					'WHERE_AM_I' => '2',
 					'U_ACTION'	=>	$post_url,
+					// Page selector start
+					'PAGE_ALL'	=>	in_array('all', $pages_selected) ? true : false,
+					'PAGE_INDEX'	=>	in_array('index', $pages_selected) ? true : false,
+					'PAGE_MCP'	=>	in_array('mcp', $pages_selected) ? true : false,
+					'PAGE_MEMBERLIST'	=>	in_array('memberlist', $pages_selected) ? true : false,
+					'PAGE_POSTING'	=>	in_array('posting', $pages_selected) ? true : false,
+					'PAGE_REPORT'	=>	in_array('report', $pages_selected) ? true : false,
+					'PAGE_SEARCH'	=>	in_array('search', $pages_selected) ? true : false,
+					'PAGE_UCP'	=>	in_array('ucp', $pages_selected) ? true : false,
+					'PAGE_VIEWONLINE'	=>	in_array('viewonline', $pages_selected) ? true : false,
+					'PAGE_VIEWTOPIC'	=>	in_array('viewtopic', $pages_selected) ? true : false,
+					// Page selector END
 					'BBCODE_STATUS'			=> $user->lang('BBCODE_IS_ON', '<a href="' . append_sid("{$phpbb_root_path}faq.{$phpEx}", 'mode=bbcode') . '">', '</a>'),
 					'SMILIES_STATUS'		=> $user->lang('SMILIES_ARE_ON'),
 					'IMG_STATUS'			=> $user->lang('IMAGES_ARE_ON'),
@@ -192,6 +205,8 @@ class announcements_module
 					'S_BBCODE_FLASH'		=> true,
 					'S_LINKS_ALLOWED'		=> true,
 				));
+				$this->tpl_name		= 'acp_announce_edit';
+				$this->page_title	= $user->lang('BOARD_ANNOUNCEMENTS');
 			break;
 			case 'edit':
 				//$this->var_display($tid);
@@ -217,6 +232,8 @@ class announcements_module
 					$dismiss_announcements = $this->request->variable('board_announcements_dismiss', false);
 					$groups = implode(':', $this->request->variable('groups', array(0)));
 					$data['announce_group'] = '{g:' . $groups . ':}';
+					$pages = implode(':', $this->request->variable('pages', array('')));
+					$data['announce_page'] = '{p:' . $pages . ':}';
 					$data['announce_bitfield'] = $message_parser->bbcode_bitfield; 
 					$data['announce_uid'] = $message_parser->bbcode_uid;
 					$data['announce_content'] = $message_parser->message;
@@ -269,6 +286,7 @@ class announcements_module
 						'CHECKED'	=> $checked,
 					));
 				}
+				$pages_selected = explode(':', isset($data['announce_page']) ? $data['announce_page'] : $row['announce_page']);
 				$sql = 'SELECT username FROM ' . USERS_TABLE . ' WHERE user_id = ' . $row['announce_owner_id'];
 				$result = $db->sql_query($sql);
 				$owner = $db->sql_fetchrow($result);
@@ -287,12 +305,23 @@ class announcements_module
 					'BOARD_ANNOUNCEMENTS_PREVIEW'	=> $announcement_text_preview,
 					'BOARD_ANNOUNCEMENTS_BGCOLOR'	=> $row['announce_bgcolor'],
 					'BOARD_ANNOUNCEMENTS_TEXT'		=> $announcement_text_edit['text'],
+					// Page selector start
+					'PAGE_ALL'	=>	in_array('all', $pages_selected) ? true : false,
+					'PAGE_INDEX'	=>	in_array('index', $pages_selected) ? true : false,
+					'PAGE_MCP'	=>	in_array('mcp', $pages_selected) ? true : false,
+					'PAGE_MEMBERLIST'	=>	in_array('memberlist', $pages_selected) ? true : false,
+					'PAGE_POSTING'	=>	in_array('posting', $pages_selected) ? true : false,
+					'PAGE_REPORT'	=>	in_array('report', $pages_selected) ? true : false,
+					'PAGE_SEARCH'	=>	in_array('search', $pages_selected) ? true : false,
+					'PAGE_UCP'	=>	in_array('ucp', $pages_selected) ? true : false,
+					'PAGE_VIEWONLINE'	=>	in_array('viewonline', $pages_selected) ? true : false,
+					'PAGE_VIEWTOPIC'	=>	in_array('viewtopic', $pages_selected) ? true : false,
+					// Page selector END
 					'EXPIRE' => $row['announce_expire'],
 					'OWNER'	=>	$owner['username'],
 					'OWNER_ID'	=> $row['announce_owner_id'],
 					'AKN'	=>	$row['announce_akn'],
 					'EDITABLE' => '1',
-					'WHERE_AM_I' => '2',
 					'U_ACTION'	=>	$post_url,
 					'BBCODE_STATUS'			=> $user->lang('BBCODE_IS_ON', '<a href="' . append_sid("{$phpbb_root_path}faq.{$phpEx}", 'mode=bbcode') . '">', '</a>'),
 					'SMILIES_STATUS'		=> $user->lang('SMILIES_ARE_ON'),
@@ -308,6 +337,8 @@ class announcements_module
 				//$this->var_display($row);
 				
 				//$this->var_display($post_url);
+				$this->tpl_name		= 'acp_announce_edit';
+				$this->page_title	= $user->lang('BOARD_ANNOUNCEMENTS');
 			break;
 			case 'del':
 				if (confirm_box(true))

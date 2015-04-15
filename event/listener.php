@@ -69,10 +69,20 @@ class listener implements EventSubscriberInterface
 	* @return null
 	* @access public
 	*/
-	public function display_board_announcements()
+	public function display_board_announcements($event)
 	{
+		$cur_page = $this->request->server('REQUEST_URI', '');
+		$fragments = explode('?', $cur_page);
+		$url = explode ('/', $fragments[0]);
+		$page_name = explode('.', end($url));
 		$exclude_announces = explode(':', $this->user->data['announce_akn']);
-		$sql = 'SELECT * FROM ' . $this->announcements_table . ' WHERE ' . $this->db->sql_in_set('announce_id', $exclude_announces, true, true) . ' and announce_group ' . $this->db->sql_like_expression($this->db->get_any_char() . ':' . $this->user->data['group_id'] . ':' . $this->db->get_any_char()) . ' ORDER BY announce_order';
+		$sql = 'SELECT * 
+				FROM ' . $this->announcements_table . ' 
+				WHERE ' . $this->db->sql_in_set('announce_id', $exclude_announces, true, true) . '
+					and announce_group ' . $this->db->sql_like_expression($this->db->get_any_char() . ':' . $this->user->data['group_id'] . ':' . $this->db->get_any_char()) . '
+					and (announce_page ' . $this->db->sql_like_expression($this->db->get_any_char() . ':' . $page_name[0] . ':' . $this->db->get_any_char()) . ' 
+						or announce_page ' . $this->db->sql_like_expression($this->db->get_any_char() . ':all:' . $this->db->get_any_char()) . ')
+				ORDER BY announce_order';
 		$result = $this->db->sql_query($sql);
 		$anouncemnts = array();
 		while ($row = $this->db->sql_fetchrow($result))

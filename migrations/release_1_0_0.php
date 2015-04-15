@@ -38,6 +38,7 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 						'announce_uid'		=> array('VCHAR:8', ''),
 						'announce_options'		=> array('VCHAR:6', ''),
 						'announce_group'			=> array('VCHAR:255', ''),
+						'announce_page'			=> array('VCHAR:255', ''),
 						'announce_order'			=> array('UINT:3', 0),
 						'announce_expire'		=> array('INT:11', 0),
 						'announce_owner_id'		=> array('UINT', 0),
