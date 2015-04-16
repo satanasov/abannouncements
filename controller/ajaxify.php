@@ -33,13 +33,16 @@ class ajaxify
 		// Close the announcement for registered users
 		if ($this->user->data['user_id'] != ANONYMOUS)
 		{
-			$response = $this->update_board_announcement_status($announcement_id, $row['announce_akn_users']);
+			$response = $this->update_board_announcement_status($announcement_id);
+		}
+		else
+		{
+			$response = true;
 		}
 		// Send a JSON response if an AJAX request was used
 		if ($this->request->is_ajax())
 		{
-			$json_response = new \phpbb\json_response;
-			$json_response->send(array(
+			return new \Symfony\Component\HttpFoundation\JsonResponse(array(
 				'success' => $response,
 				'id'	=> $announcement_id,
 			));
@@ -51,7 +54,7 @@ class ajaxify
 		// We shouldn't get here, but throw an http exception just in case
 		throw new \phpbb\exception\http_exception(500, 'GENERAL_ERROR');
 	}
-	protected function update_board_announcement_status($id, $akn_users)
+	protected function update_board_announcement_status($id)
 	{
 		$excluded = explode(':', $this->user->data['announce_akn']);
 		if (in_array($id, $excluded))

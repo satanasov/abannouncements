@@ -11,6 +11,18 @@ namespace anavaro\abannouncements\migrations;
 
 class release_1_0_0 extends \phpbb\db\migration\migration
 {
+	/**
+	* Assign migration file dependencies for this migration
+	*
+	* @return array Array of migration files
+	* @static
+	* @access public
+	*/
+	static public function depends_on()
+	{
+		return array('\phpbb\db\migration\data\v310\gold');
+	}
+
 	public function update_data()
 	{
 		return array(
@@ -49,14 +61,13 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 						'announce_expire'		=> array('INT:11', 0),
 						'announce_owner_id'		=> array('UINT', 0),
 						'announce_akn'			=> array('BOOL', 1),
-						'announce_akn_users'		=> array('MTEXT_UNI', ''),
 					),
 					'PRIMARY_KEY'	=> 'announce_id',
 				),
 			),
 			'add_columns'	=> array(
-				$this->table_prefix . 'users' => array(
-					'announce_akn' => array('VCHAR:255', ''),
+				$this->table_prefix . 'users'	=> array(
+					'announce_akn'    => array('VCHAR:255', ':'),
 				),
 			),
 		);
