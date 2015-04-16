@@ -38,12 +38,12 @@ class listener implements EventSubscriberInterface
 	* @param \phpbb\user                 $user               User object
 	* @access public
 	*/
-	public function __construct(\phpbb\cache\driver\driver_interface $cache, \phpbb\controller\helper $helper, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request,
+	public function __construct(\phpbb\cache\driver\driver_interface $cache, \phpbb\controller\helper $controller_helper, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request,
 	\phpbb\template\template $template, \phpbb\user $user,
 	$announcments_table)
 	{
 		$this->cache = $cache;
-		$this->helper = $helper;
+		$this->controller_helper = $controller_helper;
 		$this->db = $db;
 		$this->request = $request;
 		$this->template = $template;
@@ -71,6 +71,7 @@ class listener implements EventSubscriberInterface
 	*/
 	public function display_board_announcements()
 	{
+
 		$cur_page = $this->request->server('REQUEST_URI', '');
 		$fragments = explode('?', $cur_page);
 		$url = explode ('/', $fragments[0]);
@@ -124,7 +125,7 @@ class listener implements EventSubscriberInterface
 				'BOARD_ANNOUNCEMENT' => $announcement_message,
 				'S_BOARD_ANNOUNCEMENT_DISMISS'	=> $var['announce_akn'],
 				'BOARD_ANNOUNCEMENT_BGCOLOR'	=> $var['announce_bgcolor'],
-				'U_BOARD_ANNOUNCEMENT_CLOSE'	=> $this->helper->route('abannouncements_close', array(
+				'U_BOARD_ANNOUNCEMENT_CLOSE'	=> $this->controller_helper->route('abannouncements_close', array(
 					'announcement_id'	=> $var['announce_id'],
 					'hash' => generate_link_hash('close_boardannouncement')
 				)),

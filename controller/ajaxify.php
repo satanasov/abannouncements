@@ -10,10 +10,9 @@
 namespace anavaro\abannouncements\controller;
 class ajaxify
 {
-	public function __construct(\phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\user $user,
+	public function __construct(\phpbb\controller\helper $helper, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\user $user,
 	$announcments_table)
 	{
-		$this->config = $config;
 		$this->helper = $helper;
 		$this->db = $db;
 		$this->request = $request;
