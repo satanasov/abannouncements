@@ -24,6 +24,12 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 		);
 	}
 	//lets create the needed table
+	/**
+	* Add the board announcements table and aknowledge column to the users table.
+	*
+	* @return array Array of table schema
+	* @access public
+	*/
 	public function update_schema()
 	{
 		return array(
@@ -60,6 +66,11 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 		return array(
 			'drop_tables'		=> array(
 				$this->table_prefix . 'board_announce',
+			),
+			'drop_columns'	=> array(
+				$this->table_prefix . 'users'	=> array(
+					'announce_akn',
+				),
 			),
 		);
 	}
