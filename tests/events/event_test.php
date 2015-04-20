@@ -43,16 +43,18 @@ class event_test extends \phpbb_database_test_case
 	*/
 	public function setUp()
 	{
-		global $cache, $user, $phpbb_dispatcher, $phpbb_path_helper, $phpbb_container;
+		global $cache, $user, $phpbb_dispatcher, $phpbb_path_helper, $phpbb_container, $phpbb_root_path, $db;
 		parent::setUp();
 
 		$this->db = $this->new_dbal();
-		
+		$db = $this->db; //We need to set global variable for bbcode
 		// Mock some global classes that may be called during code execution
 		$cache = $this->cache = new \phpbb_mock_cache;
 		
 		$user = new \phpbb_mock_user;
 		$user->optionset('viewcensors', false);
+		$user->style['style_path'] = 'prosilver';
+		// Load/Mock classes required by the event listener class
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$phpbb_path_helper = new \phpbb\path_helper(
 			new \phpbb\symfony_request(
@@ -72,10 +74,10 @@ class event_test extends \phpbb_database_test_case
 		$this->request = $this->getMock('\phpbb\request\request');
 		$this->template = $this->getMockBuilder('\phpbb\template\template')
 			->getMock();
+
 		$this->user = $this->getMock('\phpbb\user', array(), array('\phpbb\datetime'));
 		
-		$_SERVER['REQUEST_URI'] = '';
-		
+		$_SERVER['REQUEST_URI'] = '/index.php';
 	}
 
 	public function test_install()
@@ -118,15 +120,58 @@ class event_test extends \phpbb_database_test_case
 			'core.page_header_after',
 		), array_keys(\anavaro\abannouncements\event\listener::getSubscribedEvents()));
 	}
-
+	
+	/**
+	 * Test data for the test_display_board_announcements test
+	 *
+	 * @return array Test data
+	 */
+	public function display_board_announcements_data()
+	{
+		return array(
+			'base_case' => array(
+				1, //User group_id
+				':', // User Acknowledged string
+				'', // User on page
+				2 //expected count
+			),
+			'limit_by_group' => array(
+				2, //User group_id
+				':', // User Acknowledged string
+				'', // User on page
+				1 //expected count
+			),
+			'akn_1' => array(
+				1, //User group_id
+				':1:', // User Acknowledged string
+				'', // User on page
+				1 //expected count
+			),
+			'base_case_on_index' => array(
+				1, //User group_id
+				':', // User Acknowledged string
+				'somepath/index.php', // User on page
+				2 //3 //expected count
+			),
+			'base_case_on_ucp' => array(
+				1, //User group_id
+				':', // User Acknowledged string
+				'somepath/ucp.php', // User on page
+				2 //3 //expected count
+			),
+		);
+	}
 	/**
 	* Test the display_board_announcements event
+	* @dataProvider display_board_announcements_data
 	*/
-	public function test_display_board_announcements()
+	public function test_display_board_announcements($group_id, $akn_string, $base_uri, $expected)
 	{
-		$this->user->data['group_id'] = 1;
+		$this->user->data['group_id'] = $group_id;
+		$this->user->data['announce_akn'] = $akn_string;
+		$_SERVER['REQUEST_URI'] = $base_uri;
 		$this->set_listener();
-		$this->template->expects($this->exactly(2))
+		$this->template->expects($this->exactly($expected))
 			->method('assign_block_vars');
 		$dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
 		$dispatcher->addListener('core.page_header_after', array($this->listener, 'display_board_announcements'));

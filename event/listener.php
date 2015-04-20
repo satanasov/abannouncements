@@ -71,7 +71,6 @@ class listener implements EventSubscriberInterface
 	*/
 	public function display_board_announcements()
 	{
-
 		$cur_page = $this->request->server('REQUEST_URI', '');
 		$fragments = explode('?', $cur_page);
 		$url = explode ('/', $fragments[0]);
@@ -79,7 +78,7 @@ class listener implements EventSubscriberInterface
 		{
 			$page_name = explode('.', end($url));
 		}
-		$exclude_announces = explode(':', $this->user->data['announce_akn']);
+		$exclude_announces = array_filter(explode(':', $this->user->data['announce_akn']));
 		$sql = 'SELECT * 
 				FROM ' . $this->announcements_table . ' 
 				WHERE ' . $this->db->sql_in_set('announce_id', $exclude_announces, true, true) . '
