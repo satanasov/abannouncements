@@ -21,16 +21,35 @@ class functional_test extends \phpbb_functional_test_case
 	{
 		parent::setUp();
 	}
-	public function test_acp_menu($ext, $lang, $path, $search)
+	public function test_acp_menu()
 	{
 		$this->login();
 		$this->admin_login();
 		
 		$this->add_lang_ext('anavaro/abannouncements', 'info_acp_announcements');
-		$crawler = self::request('GET', $path . '&sid=' . $this->sid);
+		$crawler = self::request('GET', 'adm/index.php?i=-anavaro-abannouncements-acp-announcements_module&mode=main&sid=' . $this->sid);
 		$this->assertContainsLang($this->lang('BOARD_ANNOUNCEMENTS'), $crawler->text());
 		$this->assertContainsLang($this->lang('NO_ANNOUNCEMENTS'), $crawler->text());
 		
+		$this->logout();
+		$this->logout();
+	}
+	public function test_acp_add_new()
+	{
+		$this->login();
+		$this->admin_login();
+		
+		$this->add_lang_ext('anavaro/abannouncements', 'info_acp_announcements');
+		$crawler = self::request('GET', 'adm/index.php?i=-anavaro-abannouncements-acp-announcements_module&mode=main&act=add&sid=' . $this->sid);
+		$form = $crawler->selectButton('submit')->form();
+		$form->setValues(array(
+			'name'	=> 'Test Full',
+			'board_announcements_text'	=> 'This is a simple board announcement full viewable by admin and guests on all pages',
+			'groups'	=> array(1, 2, 5),
+			'pages'	=> array('all'),
+		));
+		$crawler = self::submit($form);
+		$this->assertContainsLang($this->lang('BOARD_ANNOUNCEMENTS_CREATED'), $crawler->text());
 		$this->logout();
 		$this->logout();
 	}
