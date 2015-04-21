@@ -7,7 +7,9 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
+
 namespace anavaro\abannouncements\acp;
+
 class announcements_info
 {
 	function module()

@@ -9,7 +9,9 @@
 */
 
 namespace anavaro\abannouncements\event;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 /**
 * Event listener
 */

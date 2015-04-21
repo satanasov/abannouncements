@@ -7,7 +7,9 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
+
 namespace anavaro\abannouncements\controller;
+
 class ajaxify
 {
 	public function __construct(\phpbb\controller\helper $helper, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\user $user,

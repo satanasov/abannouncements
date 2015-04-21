@@ -9,6 +9,7 @@
 */
 
 namespace anavaro\abannouncements\acp;
+
 /**
 * @package acp
 */
@@ -18,16 +19,16 @@ class announcements_module
 	{
 		global $db, $user, $auth, $template, $cache, $table_prefix, $request;
 		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
-		
+
 		$this->user = $user;
 		$this->request = $request;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $phpEx;
 		$this->db = $db;
-		
-		$action = request_var('act', 'main');
-		$tid = request_var('tid', 0);
-		$inputForm = request_var('input', '0');
+
+		$action = $this->request->variable('act', 'main');
+		$tid = $this->request->variable('tid', 0);
+		$inputForm = $this->request->variable('input', '0');
 		//$this->var_display($tid);
 		$form_name = 'acp_board_announcements';
 		add_form_key($form_name);
@@ -38,7 +39,7 @@ class announcements_module
 			$groups_array[$row['group_id']] = array(
 				'id'	=>	$row['group_id'],
 				'name'	=>	$row['group_name'],
-			); 
+			);
 		}
 		// Add the posting lang file needed by BBCodes
 		$this->user->add_lang(array('posting'));
@@ -66,7 +67,7 @@ class announcements_module
 						'owner_id'	=> $row['announce_owner_id'],
 						'akn'	=> $row['announce_akn'],
 						'akn_users' => explode(':',$row['announce_akn_users']),
-					);	
+					);
 				}
 				foreach ($messages as $VAR) {
 					$group_out = '';
@@ -85,14 +86,14 @@ class announcements_module
 						'ID'	=> $VAR['id'],
 						'NAME'	=> $VAR['name'],
 						'CONTENT'	=> $VAR['content'],
-						'GROUP'	=> $group_out,	
+						'GROUP'	=> $group_out,
 						'EDIT_URL' => $edit_url,
 						'DEL_URL'	=> $del_url,
 					));
 				}
 				$template->assign_var('NEW_MESSAGE',append_sid("index.php?i=".$id."&mode=".$mode."&act=add"));
 				//$this->var_display($messages);
-				
+
 				$this->tpl_name		= 'acp_announcements';
 				$this->page_title	= $user->lang('BOARD_ANNOUNCEMENTS');
 			break;
@@ -121,7 +122,7 @@ class announcements_module
 					$data['announce_group'] = '{g:' . $groups . ':}';
 					$pages = implode(':', $this->request->variable('pages', array(0)));
 					$data['announce_page'] = '{p:' . $pages . ':}';
-					$data['announce_bitfield'] = $message_parser->bbcode_bitfield; 
+					$data['announce_bitfield'] = $message_parser->bbcode_bitfield;
 					$data['announce_uid'] = $message_parser->bbcode_uid;
 					$data['announce_content'] = $message_parser->message;
 					$disable_bbcode = $this->request->variable('disable_bbcode', 0);
@@ -234,7 +235,7 @@ class announcements_module
 					$data['announce_group'] = '{g:' . $groups . ':}';
 					$pages = implode(':', $this->request->variable('pages', array('')));
 					$data['announce_page'] = '{p:' . $pages . ':}';
-					$data['announce_bitfield'] = $message_parser->bbcode_bitfield; 
+					$data['announce_bitfield'] = $message_parser->bbcode_bitfield;
 					$data['announce_uid'] = $message_parser->bbcode_uid;
 					$data['announce_content'] = $message_parser->message;
 					$disable_bbcode = $this->request->variable('disable_bbcode', 0);
@@ -335,7 +336,7 @@ class announcements_module
 					'S_LINKS_ALLOWED'		=> true,
 				));
 				//$this->var_display($row);
-				
+
 				//$this->var_display($post_url);
 				$this->tpl_name		= 'acp_announce_edit';
 				$this->page_title	= $user->lang('BOARD_ANNOUNCEMENTS');
