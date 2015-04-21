@@ -28,21 +28,19 @@ matrix:
 
 env:
   global:
-    - EXTNAME="anavaro/abannouncements" # CHANGE name of the extension HERE
-    - SNIFF="1"        # Should we run code sniffer on your code?
-    - IMAGE_ICC="1"    # Should we run icc profile sniffer on your images?
-    - EPV="1"          # Should we run EPV (Extension Pre Validator) on your code?
+    - EXTNAME="anavaro/abannouncements"  # CHANGE name of the extension HERE
+    - SNIFF="1"            # Should we run code sniffer on your code?
+    - IMAGE_ICC="1"        # Should we run icc profile sniffer on your images?
+    - EPV="1"              # Should we run EPV (Extension Pre Validator) on your code?
     - PHPBB_BRANCH="3.1.x"
 
 branches:
   only:
     - master
-    - develop
-    - /^develop-.*$/
-    - /^release-.*$/
+    - /^(3\.[1-9]|[4-9]\.\d)\.x$/
 
 install:
-  - travis_retry composer install --dev --no-interaction --prefer-source
+  - composer install --dev --no-interaction --prefer-source
   - travis/prepare-phpbb.sh $EXTNAME $PHPBB_BRANCH
   - cd ../../phpBB3
   - travis/prepare-extension.sh $EXTNAME $PHPBB_BRANCH
