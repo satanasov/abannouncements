@@ -28,8 +28,8 @@ class functional_test extends \phpbb_functional_test_case
 		
 		$this->add_lang_ext('anavaro/abannouncements', 'info_acp_announcements');
 		$crawler = self::request('GET', 'adm/index.php?i=-anavaro-abannouncements-acp-announcements_module&mode=main&sid=' . $this->sid);
-		$this->assertContainsLang($this->lang('BOARD_ANNOUNCEMENTS'), $crawler->text());
-		$this->assertContainsLang($this->lang('NO_ANNOUNCEMENTS'), $crawler->text());
+		$this->assertContains($this->lang('BOARD_ANNOUNCEMENTS'), $crawler->text());
+		$this->assertContains($this->lang('NO_ANNOUNCEMENTS'), $crawler->text());
 		
 		$this->logout();
 		$this->logout();
@@ -45,7 +45,7 @@ class functional_test extends \phpbb_functional_test_case
 		$form->setValues(array(
 			'name'	=> 'Test Full',
 			'board_announcements_text'	=> 'This is a simple board announcement full viewable by admin and guests on all pages',
-			'groups'	=> array(1, 2, 5),
+			'groups'	=> array(1, 2, 3),
 			'pages'	=> array('all'),
 		));
 		$crawler = self::submit($form);
