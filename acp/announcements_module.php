@@ -15,6 +15,7 @@ namespace anavaro\abannouncements\acp;
 */
 class announcements_module
 {
+	var $u_action;
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache, $table_prefix, $request;
@@ -168,8 +169,8 @@ class announcements_module
 					$name = $VAR['name'];
 					//$this->var_display($checked);
 					$template->assign_block_vars('groups', array(
-						'ID'	=> $id,
-						'NAME'	=> $name,
+						'ID'	=> (int) $id,
+						'NAME'	=> $name . '('. $id .')',
 						'CHECKED'	=> (in_array($id, $groups) ? 1 : 0),
 					));
 				}
@@ -282,8 +283,8 @@ class announcements_module
 					$name = $VAR['name'];
 					//$this->var_display($checked);
 					$template->assign_block_vars('groups', array(
-						'ID'	=> $id,
-						'NAME'	=> $name,
+						'ID'	=> (int) $id,
+						'NAME'	=> $name . '('. $id .')',
 						'CHECKED'	=> $checked,
 					));
 				}
