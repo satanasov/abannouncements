@@ -45,8 +45,8 @@ class functional_test extends \phpbb_functional_test_case
 		$form->setValues(array(
 			'name'	=> 'Test Full',
 			'board_announcements_text'	=> 'This is a simple board announcement full viewable by admin and guests on all pages',
-			'groups[]'	=> array(1, 2, 3),
-			'pages[]'	=> array('all'),
+			'groups'	=> array(1, 2, 3),
+			'pages'	=> array('all'),
 		));
 		$crawler = self::submit($form);
 		$this->assertContainsLang($this->lang('BOARD_ANNOUNCEMENTS_CREATED'), $crawler->text());
