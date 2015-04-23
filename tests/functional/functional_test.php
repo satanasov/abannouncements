@@ -40,7 +40,7 @@ class functional_test extends \phpbb_functional_test_case
 		$this->admin_login();
 		
 		$this->add_lang_ext('anavaro/abannouncements', 'info_acp_announcements');
-		$crawler = self::request('GET', 'adm/index.php?i=-anavaro-abannouncements-acp-announcements_module&mode=main&act=add&sid=' . $this->sid);
+		$crawler = self::request('GET', 'adm/index.php?i=\anavaro\abannouncements\acp\announcements_module&mode=main&act=add&sid=' . $this->sid);
 		//$this->assertContains('zazazazaza', $crawler->text());
 		$form = $crawler->selectButton('submit')->form();
 		$form->setValues(array(

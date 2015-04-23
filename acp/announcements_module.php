@@ -15,9 +15,9 @@ namespace anavaro\abannouncements\acp;
 */
 class announcements_module
 {
-	var $u_action;
 	function main($id, $mode)
 	{
+		var_dump($id);
 		global $db, $user, $auth, $template, $cache, $table_prefix, $request;
 		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
 
@@ -169,8 +169,8 @@ class announcements_module
 					$name = $VAR['name'];
 					//$this->var_display($checked);
 					$template->assign_block_vars('groups', array(
-						'ID'	=> (int) $id,
-						'NAME'	=> $name . '('. $id .')',
+						'ID'	=> $id,
+						'NAME'	=> $name,
 						'CHECKED'	=> (in_array($id, $groups) ? 1 : 0),
 					));
 				}
@@ -283,8 +283,8 @@ class announcements_module
 					$name = $VAR['name'];
 					//$this->var_display($checked);
 					$template->assign_block_vars('groups', array(
-						'ID'	=> (int) $id,
-						'NAME'	=> $name . '('. $id .')',
+						'ID'	=> $id,
+						'NAME'	=> $name,
 						'CHECKED'	=> $checked,
 					));
 				}
