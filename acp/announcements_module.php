@@ -17,7 +17,6 @@ class announcements_module
 {
 	function main($id, $mode)
 	{
-		var_dump($id);
 		global $db, $user, $auth, $template, $cache, $table_prefix, $request;
 		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
 
