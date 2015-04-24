@@ -34,7 +34,7 @@ class functional_test extends \phpbb_functional_test_case
 		$this->logout();
 		$this->logout();
 	}
-	public function test_acp_add_new()
+/*	public function test_acp_add_new()
 	{
 		$this->login();
 		$this->admin_login();
@@ -53,5 +53,5 @@ class functional_test extends \phpbb_functional_test_case
 		$this->assertContainsLang($this->lang('BOARD_ANNOUNCEMENTS_CREATED'), $crawler->text());
 		$this->logout();
 		$this->logout();
-	}
+	}*/
 }
