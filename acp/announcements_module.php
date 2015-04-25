@@ -66,7 +66,7 @@ class announcements_module
 						'expire'	=> $row['announce_expire'],
 						'owner_id'	=> $row['announce_owner_id'],
 						'akn'	=> $row['announce_akn'],
-						'akn_users' => explode(':',$row['announce_akn_users']),
+						//'akn_users' => explode(':',$row['announce_akn_users']),
 					);
 				}
 				foreach ($messages as $VAR) {
@@ -134,7 +134,7 @@ class announcements_module
 					//@ TODO - implement expire and order
 					$data['announce_expire'] = 0;
 					$data['announce_order'] = 0;
-					$data['announce_akn_users'] = 0;
+					//$data['announce_akn_users'] = 0;
 					if($this->request->is_set_post('submit'))
 					{
 						$sql = 'INSERT INTO ' . $table_prefix . 'board_announce ' . $db->sql_build_array('INSERT', $data);
