@@ -78,7 +78,14 @@ class listener implements EventSubscriberInterface
 		$url = explode ('/', $fragments[0]);
 		if (isset($url))
 		{
-			$page_name = explode('.', end($url));
+			if (end($url))
+			{
+				$page_name = explode('.', end($url));
+			}
+			else
+			{
+				$page_name[0] = 'index';
+			}
 		}
 		$exclude_announces = array_filter(explode(':', $this->user->data['announce_akn']));
 		$sql = 'SELECT * 
