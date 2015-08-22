@@ -16,6 +16,11 @@
 	line-height: 1.5em;
 }
 
+/* fix image size */
+.phpbb_announcement img {
+	max-width: 100%;
+}
+
 /* style the close button */
 .phpbb_announcement .close {
 	float: right;
