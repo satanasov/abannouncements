@@ -4,20 +4,20 @@ services:
     anavaro.abannouncements.listener:
         class: anavaro\abannouncements\event\listener
         arguments:
-            - @cache.driver
-            - @controller.helper
-            - @dbal.conn
-            - @request
-            - @template
-            - @user
-            - %tables.abannouncements.announcements%
+            - '@cache.driver'
+            - '@controller.helper'
+            - '@dbal.conn'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '%tables.abannouncements.announcements%'
         tags:
             - { name: event.listener }
     anavaro.abannouncements.ajaxify:
         class: anavaro\abannouncements\controller\ajaxify
         arguments:
-            - @controller.helper
-            - @dbal.conn
-            - @request
-            - @user
-            - %tables.abannouncements.announcements%
+            - '@controller.helper'
+            - '@dbal.conn'
+            - '@request'
+            - '@user'
+            - '%tables.abannouncements.announcements%'
