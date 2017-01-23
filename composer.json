@@ -4,7 +4,7 @@
 	"description": "Adds extra featured board announcements",
 	"homepage": "http://lab.anavaro.com/forum/viewforum.php?f=7",
 	"version": "0.9.0",
-	"time": "2015-04-21",
+	"time": "2017-01-23",
 	"license": "GPL-2.0",
 	"authors": [
 		{
@@ -21,14 +21,14 @@
 		"phpbb/epv": "dev-master"
 	},
 	"extra": {
-		"display-name": "phpBB 3.1 Advanced Board Announcements",
+		"display-name": "phpBB 3.2 Advanced Board Announcements",
 		"version-check": {
 			"host": "lab.anavaro.com",
 			"directory": "/phpbb-ext",
 			"filename": "abannouncements.json"
 		},
 		"soft-require": {
-			"phpbb/phpbb": ">=3.1.0-RC2,<3.2.*@dev"
+			"phpbb/phpbb": ">=3.2.0-RC2"
 		}
 	}
 }
