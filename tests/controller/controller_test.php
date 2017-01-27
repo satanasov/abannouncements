@@ -10,6 +10,10 @@
 
 namespace anavaro\abannouncements\tests\controller;
 
+/**
+ * @group controller
+ */
+
 require_once dirname(__FILE__) . '/../../../../../includes/functions.php';
 
 class controller_test extends \phpbb_database_test_case
@@ -39,14 +43,17 @@ class controller_test extends \phpbb_database_test_case
 	*/
 	public function setUp()
 	{
+		global $config;
 		parent::setUp();
 
 		$this->db = $this->new_dbal();
+
+		$config = $this->config = new \phpbb\config\config(array());
 	}
 
 	public function test_install()
 	{
-		$db_tools = new \phpbb\db\tools($this->db);
+		$db_tools = new \phpbb\db\tools\tools($this->db);
 		$this->assertTrue($db_tools->sql_table_exists('phpbb_board_announce'));
 		$this->assertTrue($db_tools->sql_column_exists('phpbb_users', 'announce_akn'));
 	}
@@ -56,7 +63,12 @@ class controller_test extends \phpbb_database_test_case
 	*/
 	protected function get_controller($user_id, $is_registered, $mode, $ajax)
 	{
-		$user = $this->getMock('\phpbb\user', array(), array('\phpbb\datetime'));
+		global $request, $phpbb_root_path, $phpEx;
+		$this->user = $this->getMock('\phpbb\user', array(), array(
+			new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
+			'\phpbb\datetime'
+		));
+		$user = $this->user;
 		$user->data['user_id'] = $user_id;
 		$user->data['is_registered'] = $is_registered;
 

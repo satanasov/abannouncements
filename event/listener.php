@@ -17,10 +17,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 */
 class listener implements EventSubscriberInterface
 {
-	/** @var \phpbb\config\config */
-	protected $config;
-	/** @var \phpbb\config\db_text */
-	protected $config_text;
+	/** @var \phpbb\db\driver\driver */
+	protected $db;
 	/** @var \phpbb\controller\helper */
 	protected $controller_helper;
 	/** @var \phpbb\request\request */
@@ -29,17 +27,19 @@ class listener implements EventSubscriberInterface
 	protected $template;
 	/** @var \phpbb\user */
 	protected $user;
+
 	/**
-	* Constructor
-	*
-	* @param \phpbb\config\config        $config             Config object
-	* @param \phpbb\config\db_text       $config_text        DB text object
-	* @param \phpbb\controller\helper    $controller_helper  Controller helper object
-	* @param \phpbb\request\request      $request            Request object
-	* @param \phpbb\template\template    $template           Template object
-	* @param \phpbb\user                 $user               User object
-	* @access public
-	*/
+	 * Constructor
+	 *
+	 * @param \phpbb\cache\driver\driver_interface $cache
+	 * @param \phpbb\controller\helper             $controller_helper Controller helper object
+	 * @param \phpbb\db\driver\driver_interface    $db
+	 * @param \phpbb\request\request               $request           Request object
+	 * @param \phpbb\template\template             $template          Template object
+	 * @param \phpbb\user                          $user              User object
+	 * @param                                      $announcments_table
+	 * @access public
+	 */
 	public function __construct(\phpbb\cache\driver\driver_interface $cache, \phpbb\controller\helper $controller_helper, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request,
 	\phpbb\template\template $template, \phpbb\user $user,
 	$announcments_table)

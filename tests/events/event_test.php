@@ -10,6 +10,10 @@
 
 namespace anavaro\abannouncements\tests\controller;
 
+/**
+ * @group event
+ */
+
 require_once dirname(__FILE__) . '/../../../../../includes/functions.php';
 require_once dirname(__FILE__) . '/../../../../../includes/functions_content.php';
 require_once dirname(__FILE__) . '/../../../../../includes/utf/utf_tools.php';
@@ -43,30 +47,73 @@ class event_test extends \phpbb_database_test_case
 	*/
 	public function setUp()
 	{
-		global $cache, $user, $phpbb_dispatcher, $phpbb_path_helper, $phpbb_container, $phpbb_root_path, $db;
+		global $cache, $user, $phpbb_dispatcher, $phpbb_path_helper, $phpbb_container, $phpbb_root_path, $db, $config, $phpbb_filesystem;
 		parent::setUp();
 
 		$this->db = $this->new_dbal();
 		$db = $this->db; //We need to set global variable for bbcode
 		// Mock some global classes that may be called during code execution
 		$cache = $this->cache = new \phpbb_mock_cache;
-		
-		$user = new \phpbb_mock_user;
-		$user->optionset('viewcensors', false);
-		$user->style['style_path'] = 'prosilver';
+
+		global $phpbb_root_path, $phpEx;
+		$this->user = $this->getMock('\phpbb\user', array(), array(
+			new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
+			'\phpbb\datetime'
+		));
+
+		$this->user->optionset('viewcensors', false);
+		$this->user->style['style_path'] = 'prosilver';
+		$user = $this->user;
 		// Load/Mock classes required by the event listener class
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$phpbb_path_helper = new \phpbb\path_helper(
 			new \phpbb\symfony_request(
 				new \phpbb_mock_request()
 			),
-			new \phpbb\filesystem(),
+			new \phpbb\filesystem\filesystem(),
 			$this->getMock('\phpbb\request\request'),
 			$phpbb_root_path,
 			'php'
 		);
 		$phpbb_container = new \phpbb_mock_container_builder();
 		$phpbb_container->set('path_helper', $phpbb_path_helper);
+
+		$config = new \phpbb\config\config(array());
+		$phpbb_container->set('config', $config);
+
+		$phpbb_filesystem = $filesystem = new \phpbb\filesystem\filesystem();
+		$phpbb_container->set('filesystem', $filesystem);
+
+		$this->language = $this->getMockBuilder('\phpbb\language\language')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$extension_manager = new \phpbb_mock_extension_manager(
+			dirname(__FILE__) . '/',
+			array(
+				'anavaro/abannouncements' => array(
+					'ext_name' => 'anavaro/abannouncements',
+					'ext_active' => '1',
+					'ext_path' => 'ext/anavaro/abannouncements/',
+				),
+			)
+		);
+
+		$phpbb_container->set('ext.manager', $extension_manager);
+
+		$phpbb_container->setParameter('core.cache_dir', $phpbb_root_path . 'cache/' . PHPBB_ENVIRONMENT . '/');
+
+		$phpbb_container->set('user', $user);
+
+		$context = new \phpbb\template\context();
+		$twig_extension = new \phpbb\template\twig\extension($context, $this->language);
+
+		$phpbb_container->set('template.twig.extensions.phpbb', $twig_extension);
+
+		$twig_extensions_collection = new \phpbb\di\service_collection($phpbb_container);
+		$twig_extensions_collection->add('template.twig.extensions.phpbb');
+		$phpbb_container->set('template.twig.extensions.collection', $twig_extensions_collection);
+
 		$this->controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,14 +122,13 @@ class event_test extends \phpbb_database_test_case
 		$this->template = $this->getMockBuilder('\phpbb\template\template')
 			->getMock();
 
-		$this->user = $this->getMock('\phpbb\user', array(), array('\phpbb\datetime'));
 		
 		$_SERVER['REQUEST_URI'] = '/index.php';
 	}
 
 	public function test_install()
 	{
-		$db_tools = new \phpbb\db\tools($this->db);
+		$db_tools = new \phpbb\db\tools\tools($this->db);
 		$this->assertTrue($db_tools->sql_table_exists('phpbb_board_announce'));
 		$this->assertTrue($db_tools->sql_column_exists('phpbb_users', 'announce_akn'));
 	}
@@ -133,31 +179,31 @@ class event_test extends \phpbb_database_test_case
 				1, //User group_id
 				':', // User Acknowledged string
 				'', // User on page
-				2 //expected count
+				3 //expected count
 			),
 			'limit_by_group' => array(
 				2, //User group_id
 				':', // User Acknowledged string
 				'', // User on page
-				1 //expected count
+				2 //expected count
 			),
 			'akn_1' => array(
 				1, //User group_id
 				':1:', // User Acknowledged string
 				'', // User on page
-				1 //expected count
+				2 //expected count
 			),
 			'base_case_on_index' => array(
 				1, //User group_id
 				':', // User Acknowledged string
 				'somepath/index.php', // User on page
-				2 //3 //expected count
+				3 //3 //expected count
 			),
 			'base_case_on_ucp' => array(
 				1, //User group_id
 				':', // User Acknowledged string
 				'somepath/ucp.php', // User on page
-				2 //3 //expected count
+				3 //3 //expected count
 			),
 		);
 	}
