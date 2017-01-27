@@ -128,7 +128,8 @@ class event_test extends \phpbb_database_test_case
 
 	public function test_install()
 	{
-		$db_tools = new \phpbb\db\tools\tools($this->db);
+		$factory = new \phpbb\db\tools\factory();
+		$db_tools = $factory->get($this->db);
 		$this->assertTrue($db_tools->sql_table_exists('phpbb_board_announce'));
 		$this->assertTrue($db_tools->sql_column_exists('phpbb_users', 'announce_akn'));
 	}
