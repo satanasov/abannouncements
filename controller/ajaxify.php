@@ -23,7 +23,7 @@ class ajaxify
 	}
 	public function close($announcement_id)
 	{
-		$sql = 'SELECT * FROM ' . $this->announs_table . ' WHERE announce_id = ' . $announcement_id;
+		$sql = 'SELECT * FROM ' . $this->announs_table . ' WHERE announce_id = ' . (int) $announcement_id;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -35,7 +35,7 @@ class ajaxify
 		// Close the announcement for registered users
 		if ($this->user->data['user_id'] != ANONYMOUS)
 		{
-			$response = $this->update_board_announcement_status($announcement_id);
+			$response = $this->update_board_announcement_status((int) $announcement_id);
 		}
 		else
 		{
@@ -46,7 +46,7 @@ class ajaxify
 		{
 			return new \Symfony\Component\HttpFoundation\JsonResponse(array(
 				'success' => $response,
-				'id'	=> $announcement_id,
+				'id'	=> (int) $announcement_id,
 			));
 		}
 		// Redirect the user back to their last viewed page (non-AJAX requests)
@@ -58,6 +58,7 @@ class ajaxify
 	}
 	protected function update_board_announcement_status($id)
 	{
+	    $id = (int) $id;
 		$excluded = explode(':', $this->user->data['announce_akn']);
 		if (in_array($id, $excluded))
 		{
@@ -67,7 +68,7 @@ class ajaxify
 		$ex_string = implode(':', array_filter($excluded));
 		$ex_string = ':' . $ex_string . ':';
 		$sql = 'UPDATE ' . USERS_TABLE . '
-			SET announce_akn = \'' . $ex_string . '\'
+			SET announce_akn = \'' . $this->db->sql_escape($ex_string) . '\'
 			WHERE user_id = ' . (int) $this->user->data['user_id'] . '
 			AND user_type <> ' . USER_IGNORE;
 		$this->db->sql_query($sql);
