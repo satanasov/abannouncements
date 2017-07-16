@@ -23,7 +23,7 @@ class ajaxify
 	}
 	public function close($announcement_id)
 	{
-		$sql = 'SELECT * FROM ' . $this->announs_table . ' WHERE announce_id = ' . $announcement_id;
+		$sql = 'SELECT * FROM ' . $this->announs_table . ' WHERE announce_id = ' . (int) $announcement_id;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -46,7 +46,7 @@ class ajaxify
 		{
 			return new \Symfony\Component\HttpFoundation\JsonResponse(array(
 				'success' => $response,
-				'id'	=> $announcement_id,
+				'id'	=> (int) $announcement_id,
 			));
 		}
 		// Redirect the user back to their last viewed page (non-AJAX requests)
