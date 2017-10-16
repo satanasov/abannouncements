@@ -160,7 +160,7 @@ class announcements_module
 				{
 					$announcement_text_preview = generate_text_for_display($data['announce_content'], $data['announce_uid'], $data['announce_bitfield'], $data['announce_options']);
 				}
-				$announcement_text_edit = generate_text_for_edit($data['announce_content'], $data['announce_uid'], $data['announce_bitfield'], 7);
+				$announcement_text_edit = generate_text_for_edit($data['announce_content'], $data['announce_uid'], (int) $data['announce_options']);
 				$post_url = append_sid("index.php?i=".$id."&mode=".$mode."&act=add");
 				$groups = explode(':', $data['announce_group']);
 				foreach ($groups_array as $VAR) {
