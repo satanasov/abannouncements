@@ -19,12 +19,14 @@ class announcements_module
 	{
 		global $db, $user, $auth, $template, $cache, $table_prefix, $request;
 		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
-
+		global $phpbb_container;
+		
 		$this->user = $user;
 		$this->request = $request;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $phpEx;
 		$this->db = $db;
+		$group_helper = $phpbb_container->get('group_helper');
 
 		$action = $this->request->variable('act', 'main');
 		$tid = $this->request->variable('tid', 0);
@@ -38,7 +40,8 @@ class announcements_module
 		while ($row = $db->sql_fetchrow($result)) {
 			$groups_array[$row['group_id']] = array(
 				'id'	=>	$row['group_id'],
-				'name'	=>	$row['group_name'],
+				// 'name'	=>	$row['group_name'],
+				'name'	=>	$group_helper->get_name($row['group_name']),
 			);
 		}
 		// Add the posting lang file needed by BBCodes
@@ -89,6 +92,7 @@ class announcements_module
 						'GROUP'	=> $group_out,
 						'EDIT_URL' => $edit_url,
 						'DEL_URL'	=> $del_url,
+						'ORDER'		=> $VAR['order'],
 					));
 				}
 				$template->assign_var('NEW_MESSAGE',append_sid("index.php?i=".$id."&mode=".$mode."&act=add"));
@@ -246,7 +250,7 @@ class announcements_module
 					$data['announce_owner_id'] = $this->user->data['user_id'];
 					//@ TODO - implement expire and order
 					$data['announce_expire'] = 0;
-					$data['announce_order'] = 0;
+					$data['announce_order'] = $this->request->variable('order', 0);
 					$aknowledge_reset = $this->request->variable('reset_akn', 0);
 					if($this->request->is_set_post('submit'))
 					{
@@ -295,13 +299,15 @@ class announcements_module
 				$announcement_text_preview = '';
 				if ($this->request->is_set_post('preview'))
 				{
-					$announcement_text_preview = generate_text_for_display($row['announce_content'], $row['announce_uid'], $row['announce_bitfield'], $row['announce_options']);
+					$announcement_text_preview = generate_text_for_display($row['announce_content'], $row['announce_uid'], (int) $row['announce_bitfield'], $row['announce_options']);
 				}
-				$announcement_text_edit = generate_text_for_edit($row['announce_content'], $row['announce_uid'], $row['announce_bitfield'], 7);
+				$announcement_text_edit = generate_text_for_edit($row['announce_content'], $row['announce_uid'], (int) $row['announce_bitfield'], 7);
+				// print_r($row);
+				// die('OK');
 				$template->assign_vars(array(
 					'ID'	=> $row['announce_id'],
-					'NAME'	=> $row['announce_title'],
-					'ORDER'	=> $row['announce_order'],
+					'BOARD_ANNOUNCEMENTS_NAME'	=> $row['announce_title'],
+					'BOARD_ANNOUNCEMENTS_ORDER'	=> $row['announce_order'],
 					'S_BOARD_ANNOUNCEMENTS'	=> true,
 					'BOARD_ANNOUNCEMENTS_PREVIEW'	=> $announcement_text_preview,
 					'BOARD_ANNOUNCEMENTS_BGCOLOR'	=> $row['announce_bgcolor'],
