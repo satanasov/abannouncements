@@ -6,12 +6,12 @@
 <p>{L_BOARD_ANNOUNCEMENTS_EXP}
 	<table cellspacing="1" class="table1 zebra-table responsive">
 		<tr>
-			<th><B>{L_ID}</th><th>{L_TITLE}</th><th>{L_CONTENT}</th><th>{L_VISIBILITY}</th><th></th>
+			<th><B>{L_ID}</th><th>{L_TITLE}</th><th>{L_CONTENT}</th><th>{L_VISIBILITY}</th><th>{L_ORDER}</th><th></th>
 		<tr>
 		<!-- IF .messages_table -->
 		<!-- BEGIN messages_table -->
 		<tr>
-			<td valign="top">{messages_table.ID}</td><td valign="top">{messages_table.NAME}</td><td valign="top">{messages_table.CONTENT}</td><td valign="top">{messages_table.GROUP}</td><td valign="top" style="width: 32px;"><a href="{messages_table.EDIT_URL}">{ICON_EDIT}</a><a href="{messages_table.DEL_URL}">{ICON_DELETE}</a></td>
+			<td valign="top">{messages_table.ID}</td><td valign="top">{messages_table.NAME}</td><td valign="top">{messages_table.CONTENT}</td><td valign="top">{messages_table.GROUP}</td><td valign="top">{messages_table.ORDER}</td><td valign="top" style="width: 32px;"><a href="{messages_table.EDIT_URL}">{ICON_EDIT}</a><a href="{messages_table.DEL_URL}">{ICON_DELETE}</a></td>
 		</tr>
 		<!-- END messages_table -->
 		<!-- ELSE -->
