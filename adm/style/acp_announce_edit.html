@@ -39,7 +39,7 @@
 
 			<dl>
 				<dt>{L_TITLE}</dt>
-				<dd><input type="text" name="name" <!-- IF EDITABLE -->value={BOARD_ANAUNCMENT_NAME}<!-- ENDIF -->></input></dd>
+				<dd><input type="text" name="name" <!-- IF EDITABLE -->value={BOARD_ANNOUNCEMENTS_NAME}<!-- ENDIF -->></input></dd>
 			</dl>
 			<br />
 
@@ -62,6 +62,10 @@
 					<!-- ENDIF -->
 				</dd>
 				<dd style="margin-{S_CONTENT_FLOW_BEGIN}: 90px; margin-top: 10px;"><strong>{L_OPTIONS}{L_COLON} </strong>{BBCODE_STATUS} :: {IMG_STATUS} :: {FLASH_STATUS} :: {URL_STATUS} :: {SMILIES_STATUS}</dd>
+			</dl>
+			<dl class="responsive-columns">
+				<dt><label for="board_announcements_order">{L_ORDER}</dt>
+				<dd><input type="text" name="order" <!-- IF EDITABLE -->value={BOARD_ANNOUNCEMENTS_ORDER}<!-- ENDIF -->></input></dd>
 			</dl>
 			<dl class="responsive-columns">
 				<dt><label for="board_announcements_groups">{L_GROUPS}</dt>
@@ -92,8 +96,8 @@
 			</dl>
 			<dl>
 				<dt>{L_AKNOWLEGABLE}</dt>
-				<dd><input type="radio" class="radio" name="akn" value="1"<!-- IF AKN == 1 --> CHECKED<!-- ENDIF -->> Да? </dd>
-				<dd><input type="radio" class="radio" name="akn" value="0"<!-- IF AKN == 0 --> CHECKED<!-- ENDIF -->> Не? </dd>
+				<dd><input type="radio" class="radio" name="akn" value="1"<!-- IF AKN == 1 --> CHECKED<!-- ENDIF -->>{L_YES}</dd>
+				<dd><input type="radio" class="radio" name="akn" value="0"<!-- IF AKN == 0 --> CHECKED<!-- ENDIF -->>{L_NO}</dd>
 
 			</dl>
 			<dl>
