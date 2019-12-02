@@ -32,6 +32,7 @@ $lang = array_merge($lang, array(
 	'TITLE'								=> 'Title',
 	'CONTENT'							=> 'Content',
 	'VISIBILITY'						=> 'Visibility',
+	'ORDER'								=> 'Order',
 	'NO_ANNOUNCEMENTS'					=> 'There are no announcements',
 	'ADD_NEW_BOARD_ANNOUNCEMENT'		=> 'Add new announcement',
 
@@ -43,4 +44,7 @@ $lang = array_merge($lang, array(
 	'BOARD_ANAUNCMENT_DELETED'			=> 'Board announcement deleted',
 	'AKNOWLEGABLE'						=> 'Can be acknowleded by the user',
 	'RESET_AKNOWLEDGED'					=> 'Reset aknowledgment',
+	'ANNOUNCE_PAGES'					=> 'Annouce page',
+	'YES'								=> 'Yes',
+	'NO'								=> 'No',
 ));
