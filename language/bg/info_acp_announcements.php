@@ -43,4 +43,6 @@ $lang = array_merge($lang, array(
 	'BOARD_ANAUNCMENT_DELETED'			=> 'Форумното съобщение е изтрито',
 	'AKNOWLEGABLE'						=> 'Може да бъде махано от потребителя',
 	'RESET_AKNOWLEDGED'					=> 'Занули премахванията',
+	'YES'								=> 'Да?',
+	'NO'								=> 'Не?',
 ));
