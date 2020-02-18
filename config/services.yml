@@ -16,7 +16,6 @@ services:
     anavaro.abannouncements.ajaxify:
         class: anavaro\abannouncements\controller\ajaxify
         arguments:
-            - '@controller.helper'
             - '@dbal.conn'
             - '@request'
             - '@user'
