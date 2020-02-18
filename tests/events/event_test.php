@@ -47,7 +47,7 @@ class event_test extends \phpbb_database_test_case
 	*/
 	public function setUp() : void
 	{
-		global $cache, $user, $phpbb_dispatcher, $phpbb_path_helper, $phpbb_container, $phpbb_root_path, $db, $config, $phpbb_filesystem;
+		global $cache, $user, $phpbb_dispatcher, $phpbb_path_helper, $phpbb_container, $phpbb_root_path, $db, $config, $phpbb_filesystem, $phpEx;
 		parent::setUp();
 
 		$this->db = $this->new_dbal();
@@ -55,23 +55,27 @@ class event_test extends \phpbb_database_test_case
 		// Mock some global classes that may be called during code execution
 		$cache = $this->cache = new \phpbb_mock_cache;
 
-		global $phpbb_root_path, $phpEx;
-		$this->user = $this->getMock('\phpbb\user', array(), array(
-			new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
-			'\phpbb\datetime'
-		));
+		$this->user = $this->getMockBuilder('\phpbb\user')
+			->setConstructorArgs(array(
+				new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
+				'\phpbb\datetime'
+			))
+			->getMock();
 
 		$this->user->optionset('viewcensors', false);
 		$this->user->style['style_path'] = 'prosilver';
 		$user = $this->user;
 		// Load/Mock classes required by the event listener class
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
+		$this->request = $this->getMockBuilder('\phpbb\request\request')
+			->disableOriginalConstructor()
+			->getMock();
 		$phpbb_path_helper = new \phpbb\path_helper(
 			new \phpbb\symfony_request(
 				new \phpbb_mock_request()
 			),
 			new \phpbb\filesystem\filesystem(),
-			$this->getMock('\phpbb\request\request'),
+			$this->request,
 			$phpbb_root_path,
 			'php'
 		);
@@ -106,7 +110,10 @@ class event_test extends \phpbb_database_test_case
 		$phpbb_container->set('user', $user);
 
 		$context = new \phpbb\template\context();
-		$twig_extension = new \phpbb\template\twig\extension($context, $this->language);
+		$this->environment = $this->getMockBuilder('\phpbb\template\twig\environment')
+			->disableOriginalConstructor()
+			->getMock();
+		$twig_extension = new \phpbb\template\twig\extension($context, $this->environment, $this->language);
 
 		$phpbb_container->set('template.twig.extensions.phpbb', $twig_extension);
 
@@ -118,7 +125,6 @@ class event_test extends \phpbb_database_test_case
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->request = $this->getMock('\phpbb\request\request');
 		$this->template = $this->getMockBuilder('\phpbb\template\template')
 			->getMock();
 

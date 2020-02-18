@@ -64,39 +64,42 @@ class controller_test extends \phpbb_database_test_case
 	*/
 	protected function get_controller($user_id, $is_registered, $mode, $ajax)
 	{
-		global $request, $phpbb_root_path, $phpEx;
-		$this->user = $this->getMock('\phpbb\user', array(), array(
-			new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
-			'\phpbb\datetime'
-		));
+		global $user, $request, $phpbb_root_path, $phpEx;
+		$this->user = $this->getMockBuilder('\phpbb\user')
+			->setConstructorArgs(array(
+				new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
+				'\phpbb\datetime'
+			))
+			->getMock();
+		$this->user->data['user_id'] = $user_id;
+		$this->user->data['is_registered'] = $is_registered;
 		$user = $this->user;
-		$user->data['user_id'] = $user_id;
-		$user->data['is_registered'] = $is_registered;
 
-		$request = $this->getMock('\phpbb\request\request');
-		$request->expects($this->any())
+		$this->request = $this->getMockBuilder('\phpbb\request\request')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->request->expects($this->any())
 			->method('is_ajax')
 			->will($this->returnValue($ajax)
 		);
-		$request->expects($this->any())
+		$this->request->expects($this->any())
 			->method('variable')
 			->with($this->anything())
 			->will($this->returnValueMap(array(
 				array('hash', '', false, \phpbb\request\request_interface::REQUEST, generate_link_hash($mode))
 			))
-		);
+			);
 
-		$this->controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
-			->disableOriginalConstructor()
-			->getMock();
+		$request = $this->request;
 
-		return new \anavaro\abannouncements\controller\ajaxify(
-			$this->controller_helper,
+		$controller =  new \anavaro\abannouncements\controller\ajaxify(
 			$this->db,
-			$request,
-			$user,
+			$this->request,
+			$this->user,
 			'phpbb_board_announce'
 		);
+
+		return $controller;
 	}
 
 	/**
