@@ -29,7 +29,7 @@ class event_test extends \phpbb_database_test_case
 	{
 		return array('anavaro/abannouncements');
 	}
-	
+
 	protected $db;
 
 	/**
@@ -41,11 +41,11 @@ class event_test extends \phpbb_database_test_case
 	{
 		return $this->createXMLDataSet(dirname(__FILE__) . '/fixtures/config_text.xml');
 	}
-	
+
 	/**
 	* Setup test environment
 	*/
-	public function setUp()
+	public function setUp() : void
 	{
 		global $cache, $user, $phpbb_dispatcher, $phpbb_path_helper, $phpbb_container, $phpbb_root_path, $db, $config, $phpbb_filesystem;
 		parent::setUp();
@@ -117,12 +117,12 @@ class event_test extends \phpbb_database_test_case
 		$this->controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
 			->disableOriginalConstructor()
 			->getMock();
-		
+
 		$this->request = $this->getMock('\phpbb\request\request');
 		$this->template = $this->getMockBuilder('\phpbb\template\template')
 			->getMock();
 
-		
+
 		$_SERVER['REQUEST_URI'] = '/index.php';
 	}
 
@@ -133,7 +133,7 @@ class event_test extends \phpbb_database_test_case
 		$this->assertTrue($db_tools->sql_table_exists('phpbb_board_announce'));
 		$this->assertTrue($db_tools->sql_column_exists('phpbb_users', 'announce_akn'));
 	}
-	
+
 	/**
 	* Create our event listener
 	*/
@@ -157,7 +157,7 @@ class event_test extends \phpbb_database_test_case
 		$this->set_listener();
 		$this->assertInstanceOf('\Symfony\Component\EventDispatcher\EventSubscriberInterface', $this->listener);
 	}
-	
+
 	/**
 	* Test the event listener is subscribing events
 	*/
@@ -167,7 +167,7 @@ class event_test extends \phpbb_database_test_case
 			'core.page_header_after',
 		), array_keys(\anavaro\abannouncements\event\listener::getSubscribedEvents()));
 	}
-	
+
 	/**
 	 * Test data for the test_display_board_announcements test
 	 *

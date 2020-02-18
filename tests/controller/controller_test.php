@@ -27,7 +27,7 @@ class controller_test extends \phpbb_database_test_case
 	{
 		return array('anavaro/abannouncements');
 	}
-	
+
 	protected $db;
 
 	/**
@@ -41,7 +41,7 @@ class controller_test extends \phpbb_database_test_case
 	/**
 	* Setup test environment
 	*/
-	public function setUp()
+	public function setUp() : void
 	{
 		global $config;
 		parent::setUp();
@@ -89,7 +89,7 @@ class controller_test extends \phpbb_database_test_case
 		$this->controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
 			->disableOriginalConstructor()
 			->getMock();
-		
+
 		return new \anavaro\abannouncements\controller\ajaxify(
 			$this->controller_helper,
 			$this->db,
@@ -115,7 +115,7 @@ class controller_test extends \phpbb_database_test_case
 				true,
 				200,
 				'{"success":true,"id":1}', // True because a cookie was set
-				false, // Guests can't acknowledge announcement 
+				false, // Guests can't acknowledge announcement
 			),
 			array(
 				1,
@@ -155,7 +155,7 @@ class controller_test extends \phpbb_database_test_case
 		$this->assertEquals($content, $response->getContent());
 		$this->assertEquals($expected, $this->check_board_announcement_status($user_id, $announce_id));
 	}
-	
+
 	/**
 	 * Test data for the test_controller_fails test
 	 *
@@ -212,7 +212,7 @@ class controller_test extends \phpbb_database_test_case
 			$this->assertEquals($content, $exception->getMessage());
 		}
 	}
-	
+
 	/**
 	 * Helper to get the stored board announcement status for a user
 	 *
