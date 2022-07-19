@@ -224,7 +224,7 @@ class event_test extends \phpbb_database_test_case
 		$this->user->data['announce_akn'] = $akn_string;
 		$_SERVER['REQUEST_URI'] = $base_uri;
 		$this->set_listener();
-		if (PHP_MAJOR_VERSIO > 7)
+		if (PHP_MAJOR_VERSION > 7)
 		{
 			$this->assertTrue(true);
 		}

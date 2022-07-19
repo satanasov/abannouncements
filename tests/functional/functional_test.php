@@ -26,7 +26,7 @@ class functional_test extends \phpbb_functional_test_case
 		$this->login();
 		$this->admin_login();
 
-		if (PHP_MAJOR_VERSIO > 7)
+		if (PHP_MAJOR_VERSION > 7)
 		{
 			$this->sid = '';
 		}
@@ -43,7 +43,7 @@ class functional_test extends \phpbb_functional_test_case
 	{
 		$this->login();
 		$this->admin_login();
-		if (PHP_MAJOR_VERSIO > 7)
+		if (PHP_MAJOR_VERSION > 7)
 		{
 			$this->sid = '';
 		}
