@@ -74,6 +74,7 @@ class controller_test extends \phpbb_database_test_case
 		$this->user->data['user_id'] = $user_id;
 		$this->user->data['is_registered'] = $is_registered;
 		$this->user->data['user_form_salt'] = "";
+		$this->user->data['announce_akn'] = "";
 		$user = $this->user;
 
 		$this->request = $this->getMockBuilder('\phpbb\request\request')

@@ -235,7 +235,6 @@ class announcements_module
 					{
 						$message_parser->parse(true, true, true, true, false, true, true, true);
 					}
-					var_dump($message_parser);
 					// Get config options from the form
 					$dismiss_announcements = $this->request->variable('board_announcements_dismiss', false);
 					$groups = implode(':', $this->request->variable('groups', array(0)));
