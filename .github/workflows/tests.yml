@@ -194,10 +194,18 @@ jobs:
               run: mkdir -p phpBB/ext/$EXTNAME/.github && cp .github/phpunit* $_
               working-directory: ./phpBB3
 
-            - name: Run unit tests
+            - name: Run unit tests for non 7.3
+              if: matrix.php != '7.3'
               env:
                   DB: ${{steps.database-type.outputs.db}}
               run: phpBB/vendor/bin/phpunit --configuration phpBB/ext/$EXTNAME/.github/phpunit-$DB-github.xml --bootstrap ./tests/bootstrap.php
+              working-directory: ./phpBB3
+
+            - name: Run unit tests for 7.3 with clover
+              if: matrix.php == '7.3'
+              env:
+                  DB: ${{steps.database-type.outputs.db}}
+              run: phpBB/vendor/bin/phpunit --configuration phpBB/ext/$EXTNAME/.github/phpunit-$DB-github.xml --bootstrap ./tests/bootstrap.php --coverage-clover phpBB/ext/$EXTNAME/.github/clover.xml
               working-directory: ./phpBB3
 
             - uses: actions/checkout@v2
@@ -208,6 +216,8 @@ jobs:
             - name: Upload Scrutinizer coverage
               if: matrix.php == '7.3'
               uses: sudo-bot/action-scrutinizer@latest
+              with:
+                 cli-args: "--format=php-clover phpBB/ext/$EXTNAME/.github/clover.xml"
     # END MySQL and MariaDB Job
 
     # START PostgreSQL Job
