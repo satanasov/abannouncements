@@ -206,7 +206,7 @@ jobs:
                   # 10 commits is an arbitrary value that is more than 1 commit
                   fetch-depth: 10
             - name: Upload Scrutinizer coverage
-              if: matrix.db == '7.4'
+              if: matrix.php == '7.3'
               uses: sudo-bot/action-scrutinizer@latest
     # END MySQL and MariaDB Job
 
