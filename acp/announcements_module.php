@@ -297,7 +297,8 @@ class announcements_module
 				{
 					$announcement_text_preview = generate_text_for_display($row['announce_content'], $row['announce_uid'], $row['announce_bitfield'], $row['announce_options']);
 				}
-				$announcement_text_edit = generate_text_for_edit($row['announce_content'], $row['announce_uid'], $row['announce_bitfield'], 7);
+
+				$announcement_text_edit = generate_text_for_edit($row['announce_content'], $row['announce_uid'], $row['announce_options']);
 				$template->assign_vars(array(
 					'ID'	=> $row['announce_id'],
 					'NAME'	=> $row['announce_title'],
