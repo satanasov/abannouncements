@@ -127,7 +127,7 @@ class announcements_module
 					$data['announce_group'] = '{g:' . $groups . ':}';
 					$pages = implode(':', $this->request->variable('pages', array(0)));
 					$data['announce_page'] = '{p:' . $pages . ':}';
-					$data['announce_bitfield'] = $message_parser->bbcode_bitfield;
+					$data['announce_bitfield'] =strlen($message_parser->bbcode_bitfield) > 0 ? $message_parser->bbcode_bitfield : "0";;
 					$data['announce_uid'] = $message_parser->bbcode_uid;
 					$data['announce_content'] = $message_parser->message;
 					$disable_bbcode = $this->request->variable('disable_bbcode', 0);
@@ -235,13 +235,14 @@ class announcements_module
 					{
 						$message_parser->parse(true, true, true, true, false, true, true, true);
 					}
+					var_dump($message_parser);
 					// Get config options from the form
 					$dismiss_announcements = $this->request->variable('board_announcements_dismiss', false);
 					$groups = implode(':', $this->request->variable('groups', array(0)));
 					$data['announce_group'] = '{g:' . $groups . ':}';
 					$pages = implode(':', $this->request->variable('pages', array('')));
 					$data['announce_page'] = '{p:' . $pages . ':}';
-					$data['announce_bitfield'] = $message_parser->bbcode_bitfield;
+					$data['announce_bitfield'] = strlen($message_parser->bbcode_bitfield) > 0 ? $message_parser->bbcode_bitfield : "0";
 					$data['announce_uid'] = $message_parser->bbcode_uid;
 					$data['announce_content'] = $message_parser->message;
 					$disable_bbcode = $this->request->variable('disable_bbcode', 0);
