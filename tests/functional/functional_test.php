@@ -26,6 +26,10 @@ class functional_test extends \phpbb_functional_test_case
 		$this->login();
 		$this->admin_login();
 
+		if (!isset($this->sid))
+		{
+			$this->sid = '';
+		}
 		$this->add_lang_ext('anavaro/abannouncements', 'info_acp_announcements');
 		$crawler = self::request('GET', 'adm/index.php?i=-anavaro-abannouncements-acp-announcements_module&mode=main&sid=' . $this->sid);
 		$this->assertStringContainsString($this->lang('BOARD_ANNOUNCEMENTS'), $crawler->text());
@@ -39,6 +43,10 @@ class functional_test extends \phpbb_functional_test_case
 		$this->login();
 		$this->admin_login();
 
+		if (!isset($this->sid))
+		{
+			$this->sid = '';
+		}
 		$this->add_lang_ext('anavaro/abannouncements', 'info_acp_announcements');
 		$crawler = self::request('GET', 'adm/index.php?i=\anavaro\abannouncements\acp\announcements_module&mode=main&act=add&sid=' . $this->sid);
 		//$this->assertContains('zazazazaza', $crawler->text());
