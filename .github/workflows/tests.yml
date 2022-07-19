@@ -208,16 +208,10 @@ jobs:
               run: phpBB/vendor/bin/phpunit --configuration phpBB/ext/$EXTNAME/.github/phpunit-$DB-github.xml --bootstrap ./tests/bootstrap.php --coverage-clover phpBB/ext/$EXTNAME/.github/clover.xml
               working-directory: ./phpBB3
 
-            - uses: actions/checkout@v2
-              with:
-                  # Fetch 10 commits or Scrutinizer will throw ("Failed to retrieve commit parents. If you use a shallow git checkout, please checkout at least a depth of one."), see: RepositoryIntrospector at scrutinizer-ci/ocular GitHub repository
-                  # 10 commits is an arbitrary value that is more than 1 commit
-                  fetch-depth: 10
             - name: Upload Scrutinizer coverage
               if: matrix.php == '7.3'
-              uses: sudo-bot/action-scrutinizer@latest
-              with:
-                 cli-args: "--format=php-clover phpBB/ext/$EXTNAME/.github/clover.xml"
+              run: wget https://scrutinizer-ci.com/ocular.phar; php ocular.phar code-coverage:upload --format=php-clover phpBB/ext/$EXTNAME/.github/clover.xml
+              working-directory: ./phpBB3
     # END MySQL and MariaDB Job
 
     # START PostgreSQL Job
