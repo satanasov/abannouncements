@@ -35,7 +35,8 @@ class announcements_module
 		//Lets get some groups!
 		$sql = 'SELECT group_id, group_name FROM ' . GROUPS_TABLE;
 		$result = $db->sql_query($sql);
-		while ($row = $db->sql_fetchrow($result)) {
+		while ($row = $db->sql_fetchrow($result))
+		{
 			$groups_array[$row['group_id']] = array(
 				'id'	=>	$row['group_id'],
 				'name'	=>	$row['group_name'],
@@ -49,14 +50,16 @@ class announcements_module
 			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 		}
 		//$this->var_display(append_sid(test));
-		switch ($action) {
+		switch ($action)
+		{
 			case 'main':
 				$sql = 'SELECT * FROM ' . $table_prefix . 'board_announce';
 				$result = $db->sql_query($sql);
 				//this->var_display($_POST);
 				//$this->var_display($_GET);
 				$messages = array();
-				while ($row = $db->sql_fetchrow($result)) {
+				while ($row = $db->sql_fetchrow($result))
+				{
 					$messages[$row['announce_id']] = array (
 						'id'	=> $row['announce_id'],
 						'name'	=> $row['announce_title'],
@@ -69,10 +72,12 @@ class announcements_module
 						//'akn_users' => explode(':',$row['announce_akn_users']),
 					);
 				}
-				foreach ($messages as $VAR) {
+				foreach ($messages as $VAR)
+				{
 					$group_out = '';
 					if (!empty($VAR['group'])) {
-						foreach ($VAR['group'] as $RAW) {
+						foreach ($VAR['group'] as $RAW)
+						{
 							if ($RAW)
 							{
 								$group_out .= $groups_array[$RAW]['name']."<br>";
@@ -135,7 +140,7 @@ class announcements_module
 					$data['announce_expire'] = 0;
 					$data['announce_order'] = 0;
 					//$data['announce_akn_users'] = 0;
-					if($this->request->is_set_post('submit'))
+					if ($this->request->is_set_post('submit'))
 					{
 						$sql = 'INSERT INTO ' . $table_prefix . 'board_announce ' . $db->sql_build_array('INSERT', $data);
 						$db->sql_query($sql);
@@ -163,7 +168,8 @@ class announcements_module
 				$announcement_text_edit = generate_text_for_edit($data['announce_content'], $data['announce_uid'], (int) $data['announce_options']);
 				$post_url = append_sid("index.php?i=".$id."&mode=".$mode."&act=add");
 				$groups = explode(':', $data['announce_group']);
-				foreach ($groups_array as $VAR) {
+				foreach ($groups_array as $VAR)
+				{
 					$id = $VAR['id'];
 					$name = $VAR['name'];
 					//$this->var_display($checked);
@@ -248,7 +254,7 @@ class announcements_module
 					$data['announce_expire'] = 0;
 					$data['announce_order'] = 0;
 					$aknowledge_reset = $this->request->variable('reset_akn', 0);
-					if($this->request->is_set_post('submit'))
+					if ($this->request->is_set_post('submit'))
 					{
 						if ($aknowledge_reset)
 						{
@@ -271,12 +277,15 @@ class announcements_module
 					$row = $db->sql_fetchrow($result);
 				}
 				$groups = explode(":", substr($row['announce_group'], 3, -2));
-				foreach ($groups_array as $VAR) {
+				foreach ($groups_array as $VAR)
+				{
 					$id = $VAR['id'];
-					if (in_array($id, $groups)) {
+					if (in_array($id, $groups))
+					{
 						$checked = '1';
 					}
-					else {
+					else
+					{
 						$checked = '0';
 					}
 					$name = $VAR['name'];
