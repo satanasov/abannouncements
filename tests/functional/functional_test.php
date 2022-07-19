@@ -11,7 +11,7 @@ namespace anavaro\abannouncements\tests\functional;
 /**
 * @group functional
 */
-class functional_test extends \phpbb_functional_test_case
+class functional_test extends phpbb_functional_test_case
 {
 	static protected function setup_extensions()
 	{
@@ -26,11 +26,6 @@ class functional_test extends \phpbb_functional_test_case
 		$this->login();
 		$this->admin_login();
 
-		if (PHP_MAJOR_VERSION > 7)
-		{
-			$this->sid = '';
-		}
-
 		$this->add_lang_ext('anavaro/abannouncements', 'info_acp_announcements');
 		$crawler = self::request('GET', 'adm/index.php?i=-anavaro-abannouncements-acp-announcements_module&mode=main&sid=' . $this->sid);
 		$this->assertStringContainsString($this->lang('BOARD_ANNOUNCEMENTS'), $crawler->text());
@@ -43,10 +38,6 @@ class functional_test extends \phpbb_functional_test_case
 	{
 		$this->login();
 		$this->admin_login();
-		if (PHP_MAJOR_VERSION > 7)
-		{
-			$this->sid = '';
-		}
 
 		$this->add_lang_ext('anavaro/abannouncements', 'info_acp_announcements');
 		$crawler = self::request('GET', 'adm/index.php?i=\anavaro\abannouncements\acp\announcements_module&mode=main&act=add&sid=' . $this->sid);
