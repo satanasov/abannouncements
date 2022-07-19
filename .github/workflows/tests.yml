@@ -78,7 +78,7 @@ jobs:
 
             - name: Check executable files
               if: ${{ env.EXECUTABLE_FILES != 0 }}
-              run: rm $EXTNAME/travis/*; .github/ext-check-executable-files.sh ./ $EXTNAME
+              run: rm phpBB/ext/$EXTNAME/travis/*; .github/ext-check-executable-files.sh ./ $EXTNAME
               working-directory: ./phpBB3
 
             - name: Run EPV
