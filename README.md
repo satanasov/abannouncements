@@ -15,9 +15,9 @@ Features
     - Set group visibility
     - Control if the given announcement can be aknowledged
     
-Travis-ci state:
+Tests:
 
-[![Build Status](https://travis-ci.org/satanasov/abannouncements.svg?branch=master)](https://travis-ci.org/satanasov/abannouncements) 
+[![Build Status](https://github.com/satanasov/abannouncements/workflows/Tests/badge.svg)](https://github.com/satanasov/abannouncements//actions)
 
 Covarage:
 
