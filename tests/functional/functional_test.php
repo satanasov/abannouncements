@@ -50,7 +50,7 @@ class functional_test extends \phpbb_functional_test_case
 		//	'pages'	=> array('all'),
 		));
 		$crawler = self::submit($form);
-		$this->assertContains($this->lang('BOARD_ANNOUNCEMENTS_CREATED'), $crawler->text());
+		$this->assertStringContainsString($this->lang('BOARD_ANNOUNCEMENTS_CREATED'), $crawler->text());
 		$this->logout();
 		$this->logout();
 	}
