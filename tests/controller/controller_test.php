@@ -73,6 +73,7 @@ class controller_test extends \phpbb_database_test_case
 			->getMock();
 		$this->user->data['user_id'] = $user_id;
 		$this->user->data['is_registered'] = $is_registered;
+		$this->user->data['user_form_salt'] = "";
 		$user = $this->user;
 
 		$this->request = $this->getMockBuilder('\phpbb\request\request')
