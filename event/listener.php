@@ -112,7 +112,7 @@ class listener implements EventSubscriberInterface
 				'announce_id' => $row['announce_id'],
 				'announce_title' => $row['announce_title'],
 				'announce_content' => $row['announce_content'],
-				'announce_bitfield' => $row['announce_bitfield'],
+				'announce_bitfield' => (strlen($row['announce_bitfield']) ? $row['announce_bitfield'] : '0'),
 				'announce_options' => $row['announce_options'],
 				'announce_uid' => $row['announce_uid'],
 				'announce_akn' => $row['announce_akn'],

@@ -127,7 +127,6 @@ class event_test extends \phpbb_database_test_case
 
 		$this->template = $this->getMockBuilder('\phpbb\template\template')
 			->getMock();
-		$this->template['bbcode_bitfield'] = '';
 
 
 		$_SERVER['REQUEST_URI'] = '/index.php';
