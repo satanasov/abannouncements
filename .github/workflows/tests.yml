@@ -199,6 +199,15 @@ jobs:
                   DB: ${{steps.database-type.outputs.db}}
               run: phpBB/vendor/bin/phpunit --configuration phpBB/ext/$EXTNAME/.github/phpunit-$DB-github.xml --bootstrap ./tests/bootstrap.php
               working-directory: ./phpBB3
+
+            - uses: actions/checkout@v2
+              with:
+                  # Fetch 10 commits or Scrutinizer will throw ("Failed to retrieve commit parents. If you use a shallow git checkout, please checkout at least a depth of one."), see: RepositoryIntrospector at scrutinizer-ci/ocular GitHub repository
+                  # 10 commits is an arbitrary value that is more than 1 commit
+                  fetch-depth: 10
+            - name: Upload Scrutinizer coverage
+              if: matrix.db == '7.4'
+              uses: sudo-bot/action-scrutinizer@latest
     # END MySQL and MariaDB Job
 
     # START PostgreSQL Job
