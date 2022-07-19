@@ -28,8 +28,8 @@ class functional_test extends \phpbb_functional_test_case
 
 		$this->add_lang_ext('anavaro/abannouncements', 'info_acp_announcements');
 		$crawler = self::request('GET', 'adm/index.php?i=-anavaro-abannouncements-acp-announcements_module&mode=main&sid=' . $this->sid);
-		$this->assertContains($this->lang('BOARD_ANNOUNCEMENTS'), $crawler->text());
-		$this->assertContains($this->lang('NO_ANNOUNCEMENTS'), $crawler->text());
+		$this->assertContains($this->lang('BOARD_ANNOUNCEMENTS'), array($crawler->text()));
+		$this->assertContains($this->lang('NO_ANNOUNCEMENTS'), array($crawler->text()));
 
 		$this->logout();
 		$this->logout();
