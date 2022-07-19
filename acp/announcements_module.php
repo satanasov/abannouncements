@@ -75,7 +75,8 @@ class announcements_module
 				foreach ($messages as $VAR)
 				{
 					$group_out = '';
-					if (!empty($VAR['group'])) {
+					if (!empty($VAR['group']))
+					{
 						foreach ($VAR['group'] as $RAW)
 						{
 							if ($RAW)
@@ -127,7 +128,7 @@ class announcements_module
 					$data['announce_group'] = '{g:' . $groups . ':}';
 					$pages = implode(':', $this->request->variable('pages', array(0)));
 					$data['announce_page'] = '{p:' . $pages . ':}';
-					$data['announce_bitfield'] =strlen($message_parser->bbcode_bitfield) > 0 ? $message_parser->bbcode_bitfield : "0";;
+					$data['announce_bitfield'] = (strlen($message_parser->bbcode_bitfield) > 0 ? $message_parser->bbcode_bitfield : "0");
 					$data['announce_uid'] = $message_parser->bbcode_uid;
 					$data['announce_content'] = $message_parser->message;
 					$disable_bbcode = $this->request->variable('disable_bbcode', 0);
@@ -241,7 +242,7 @@ class announcements_module
 					$data['announce_group'] = '{g:' . $groups . ':}';
 					$pages = implode(':', $this->request->variable('pages', array('')));
 					$data['announce_page'] = '{p:' . $pages . ':}';
-					$data['announce_bitfield'] = strlen($message_parser->bbcode_bitfield) > 0 ? $message_parser->bbcode_bitfield : "0";
+					$data['announce_bitfield'] = (strlen($message_parser->bbcode_bitfield) > 0 ? $message_parser->bbcode_bitfield : "0");
 					$data['announce_uid'] = $message_parser->bbcode_uid;
 					$data['announce_content'] = $message_parser->message;
 					$disable_bbcode = $this->request->variable('disable_bbcode', 0);
